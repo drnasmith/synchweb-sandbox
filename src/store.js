@@ -1,42 +1,69 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
+import axios from 'axios'
+
 Vue.use(Vuex)
+
+var API_ROOT = '/api/'
 
 export default new Vuex.Store({
   timeoutId: null,
   state: {
-    message: {text: "", isError: false},
-    apiRoot: '/api/',
-    location: '',
-    jwt: ''
+    apiRoot: API_ROOT,
+    token: '',
   },
   mutations: {
-    setMessage(state, payload) {
-        state.message.text = payload.text
-        state.message.isError = payload.isError
+      auth_request(state){
+        state.status = 'loading'
       },
-      setToken(state, token) {
-        console.log("Setting Store Token to " + token)
-        state.jwt = token
+      auth_success(state, token, user){
+        state.status = 'success'
+        state.token = token
+        state.user = user
+        localStorage.setItem('token', token)
+        axios.defaults.headers.common['Authorization'] = 'Bearer ' + token
       },
+      auth_error(state){
+        state.status = 'error'
+        localStorage.removeItem('token')
+        delete axios.defaults.headers.common['Authorization']
+      },
+      logout(state){
+        state.status = ''
+        state.token = ''
+        localStorage.removeItem('token')
+        delete axios.defaults.headers.common['Authorization']
+      },      
     },
   actions: {
-    // Use this action to update the message text from any component
-    updateMessage(state, payload) {
-
-      if (this.timeoutId) {
-        clearTimeout(this.timeoutId)
+    login({commit}, credentials){
+        return new Promise((resolve, reject) => {
+          commit('auth_request')
+          axios({url: API_ROOT + 'authenticate', data: credentials, method: 'POST' })
+          .then(resp => {
+            const token = resp.data.jwt
+            const user = credentials.login // Using passed fed id at the moment
+            commit('auth_success', token, user)
+            resolve(resp)
+          })
+          .catch(err => {
+            commit('auth_error')
+            reject(err)
+          })
+        })
+    },
+    logout({commit}){
+        return new Promise((resolve, reject) => {
+          commit('logout')
+          resolve()
+        })
       }
-
-      state.commit('setMessage', payload)
-
-      // Reset the message state after a specified interval
-      let context = state
-
-      this.timeoutId = setTimeout(function() { 
-        context.commit('setMessage', {text:'', isError:false})
-      }, 3000)
-    }
   },
-})
+  getters: {
+    isLoggedIn: state => !!state.token,
+    authStatus: state => state.status,
+    apiRoot: state => state.apiRoot
+  }
+  }
+)

@@ -35,31 +35,16 @@ export default {
         onSubmit: function(event) {
             event.preventDefault()
             console.log("Login: " + this.username + ":" + this.password)
-            this.$http.post()
 
-            let formData = new FormData();
-            formData.append('login', this.username)
-            formData.append('password', this.password)
+            // let formData = new FormData();
+            // formData.append('login', this.username)
+            // formData.append('password', this.password)
 
-            // Store a reference to this for inner callbacks
-            let self = this
+            let credentials = { 'login': this.username, 'password': this.password }
 
-            let url = this.$store.state.apiRoot + "authenticate"
-
-            console.log("Posting to " + url)
-
-            this.$http.post(url, formData)
-                .then(function(response) {
-                    let json = response.data
-                    console.log("OK Response = " + json)
-                    if (json.jwt) {
-                        console.log("JWT = " + json.jwt)
-                        self.$store.commit("setToken", json.jwt)
-                    }
-                })
-                .catch(function() {
-                    console.log("Error authenticating" + self.username)
-                })
+            this.$store.dispatch('login', credentials)
+            .then(() => this.$router.push('/proposals'))
+            .catch(err => console.log(err))
         }
     }
 }
