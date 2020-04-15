@@ -12,8 +12,23 @@ export default new Vuex.Store({
   state: {
     apiRoot: API_ROOT,
     token: '',
+    proposal: '',
+    visit: ''
   },
   mutations: {
+      save_proposal(state, prop) {
+        console.log("Saved proposal " + prop)
+        state.proposal = prop
+      },
+      clear_proposal(state) {
+        state.proposal = ''
+      },
+      save_visit(state, visit) {
+        state.visit = visit
+      },
+      clear_visit(state) {
+        state.visit = ''
+      },      
       auth_request(state){
         state.status = 'loading'
       },
@@ -63,7 +78,8 @@ export default new Vuex.Store({
   getters: {
     isLoggedIn: state => !!state.token,
     authStatus: state => state.status,
-    apiRoot: state => state.apiRoot
+    apiRoot: state => state.apiRoot,
+    currentProposal: state => state.proposal,
   }
   }
 )

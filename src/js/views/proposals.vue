@@ -3,9 +3,12 @@
         <h1>Proposals View</h1>
         <ul>
             <li v-for="(proposal, index) in proposals" v-bind:key='index'>
-                {{proposal.TITLE}}
+                <a href='#' v-on:click.prevent="onSelectProposal(proposal.PROPOSALCODE+proposal.PROPOSALNUMBER)">{{proposal.TITLE}}</a>
             </li>
         </ul>
+        <router-link to="shipments/">View Shipments</router-link>
+        <router-link to="contacts/">View Lab Contacts</router-link>
+        
         <p>There are {{total}} proposals</p>
     </div>
 </template>
@@ -27,6 +30,9 @@ export default {
     },
 
     methods: {
+        onSelectProposal: function(prop) {
+            this.$store.commit('save_proposal', prop)
+        },
         getTypes: function() {
             let url = this.$store.getters.apiRoot + 'proposal/type'
             let params = ''

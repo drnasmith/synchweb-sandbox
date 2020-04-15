@@ -1,10 +1,13 @@
 <template>
   <div id="wrapper">
     <Header />
-    <div class="cont_wrap">
-        <div class="tw-w-full tw-mx-2">
-            <router-view></router-view>
-        </div>
+    <div class="tw-container tw-mx-auto">
+      <Sidebar />
+      <div class="cont_wrap">
+          <div class="tw-w-full tw-mx-2">
+              <router-view></router-view>
+          </div>
+      </div>
     </div>
     <Footer />
   </div>
@@ -14,12 +17,14 @@
 <script>
 import Header from './js/components/header.vue'
 import Footer from './js/components/footer.vue'
+import Sidebar from './js/components/sidebar.vue'
 
 export default {
     name: 'App',
     components: {
         Header,
         Footer,
+        Sidebar,
     },
     created: function () {
       // Do we have a local token?
