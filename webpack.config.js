@@ -55,6 +55,7 @@ module.exports = (env, argv)  => {
       // Vue packages from npm (vee-validate requires promise polyfill - also npm)
       vue: 'vue/dist/vue.min',
       veevalidate: 'vee-validate/dist/vee-validate.min',
+      'underscore': 'lodash'  
     },
     modules: [
       path.resolve(__dirname, 'src/js'),
@@ -130,6 +131,10 @@ module.exports = (env, argv)  => {
   },
 
   plugins: [
+    new webpack.ProvidePlugin({
+       _: "underscore",
+   }),
+
     new HtmlWebpackPlugin({
       title: 'SynchWeb Webpack',
       filename: path.resolve(__dirname, 'dist/', gitHash, 'index.html'),

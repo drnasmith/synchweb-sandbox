@@ -14,6 +14,8 @@
 </template>
 
 <script>
+import Backbone from 'backbone'
+
 export default {
     name: 'Proposals',
 
@@ -26,41 +28,28 @@ export default {
     created: function() {
         // Get visits for this user
         this.getProposals()
-        this.getTypes()
     },
 
     methods: {
         onSelectProposal: function(prop) {
             this.$store.commit('save_proposal', prop)
         },
-        getTypes: function() {
-            let url = this.$store.getters.apiRoot + 'proposal/type'
-            let params = ''
 
-            this.debugRequest(url, params)
-        },
-        debugRequest: function(url, params) {
-            this.$http.get(url, params)
-            .then(resp => {
-                console.log(JSON.stringify(resp.data))
-            })
-            .catch(err => {
-                console.log("Error getting proposals" + err)
-            })
-        },
         getProposals: function() {
             let self = this
-            let url = this.$store.getters.apiRoot + 'proposal'
-            let params = ''
-            this.$http.get(url, params)
-            .then(resp => {
-                self.total = resp.data.total
-                self.proposals = resp.data.data
-                console.log(self.total)
-                console.log(self.proposals)
-            })
-            .catch(err => {
-                console.log("Error getting proposals" + err)
+            let url = this.$store.getters.apiRoot + '/proposal'
+            Backbone.ajax({
+                url: url,
+                success: function(resp) {
+                    console.log(JSON.stringify(resp))
+                    self.total = resp.total
+                    self.proposals = resp.data
+                    console.log(self.total)
+                    console.log(self.proposals)
+                },
+                error: function(err) {
+                    console.log("Error getting proposals" + err)
+                }
             })
         }
     }

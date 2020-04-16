@@ -4,6 +4,7 @@
         <div v-if="isLoggedIn">
             <router-link to="/visits">Visits</router-link>
             <router-link to="/proposals">Proposals</router-link>
+            <router-link to="/test">Backbone Test</router-link>
         </div>
         <div v-else>
             <p>Login to see visits/proposals etc</p>

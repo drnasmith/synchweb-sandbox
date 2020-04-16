@@ -5,12 +5,16 @@ import axios from 'axios'
 
 Vue.use(Vuex)
 
-var API_ROOT = '/api/'
+var API_ROOT = '/api'
+
+// Keep a global app object for compatibility
+var app = app || {}
 
 export default new Vuex.Store({
   timeoutId: null,
   state: {
     apiRoot: API_ROOT,
+    user: '',
     token: '',
     proposal: '',
     visit: ''
@@ -19,9 +23,11 @@ export default new Vuex.Store({
       save_proposal(state, prop) {
         console.log("Saved proposal " + prop)
         state.proposal = prop
+        app.prop = prop
       },
       clear_proposal(state) {
         state.proposal = ''
+        app.prop = ''
       },
       save_visit(state, visit) {
         state.visit = visit
@@ -36,26 +42,23 @@ export default new Vuex.Store({
         state.status = 'success'
         state.token = token
         state.user = user
-        localStorage.setItem('token', token)
-        axios.defaults.headers.common['Authorization'] = 'Bearer ' + token
+        sessionStorage.setItem('token', token)
       },
       auth_error(state){
         state.status = 'error'
-        localStorage.removeItem('token')
-        delete axios.defaults.headers.common['Authorization']
+        sessionStorage.removeItem('token')
       },
       logout(state){
         state.status = ''
         state.token = ''
-        localStorage.removeItem('token')
-        delete axios.defaults.headers.common['Authorization']
+        sessionStorage.removeItem('token')
       },      
     },
   actions: {
     login({commit}, credentials){
         return new Promise((resolve, reject) => {
           commit('auth_request')
-          axios({url: API_ROOT + 'authenticate', data: credentials, method: 'POST' })
+          axios({url: API_ROOT + '/authenticate', data: credentials, method: 'POST' })
           .then(resp => {
             const token = resp.data.jwt
             const user = credentials.login // Using passed fed id at the moment
@@ -77,6 +80,13 @@ export default new Vuex.Store({
   },
   getters: {
     isLoggedIn: state => !!state.token,
+    token: function(state) {
+      if (!state.token) {
+        // Any in storage?
+        state.token = sessionStorage.getItem('token')
+      }
+      return state.token
+    },
     authStatus: state => state.status,
     apiRoot: state => state.apiRoot,
     currentProposal: state => state.proposal,

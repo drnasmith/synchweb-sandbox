@@ -4,9 +4,12 @@ import Home from './js/views/home.vue'
 import Login from './js/views/login.vue'
 import Visits from './js/views/visits.vue'
 import Proposals from './js/views/proposals.vue'
-import Shipments from './js/views/shipments.vue'
+import Shipments from './js/views/shipment/shipments.vue'
+import AddShipment from './js/components/addShipment.vue'
+import ListShipments from './js/components/shipmentList.vue'
 import LabContacts from './js/views/labcontacts.vue'
 import LabContact from './js/components/labcontact.vue'
+import BackboneTest from './js/views/bbtest.vue'
 
 Vue.use(Router)
 
@@ -40,6 +43,23 @@ let router = new Router({
       path: '/shipments',
       name: 'shipments',
       component: Shipments,
+      children: [
+        {
+          path: '',
+          name: 'listShipments',
+          component: ListShipments
+        },
+        {
+          path: '/shipment/new',
+          name: 'addShipment2',
+          component: AddShipment
+        }
+      ]
+    },
+    {
+      path: '/shipments/new',
+      name: 'addShipment',
+      component: AddShipment,
     },
     {
       path: '/contacts',
@@ -51,6 +71,11 @@ let router = new Router({
       name: 'contact',
       component: LabContact,
       props: true
+    },
+    {
+      path: '/test',
+      name: 'bbtest',
+      component: BackboneTest,
     },
 ]
 })

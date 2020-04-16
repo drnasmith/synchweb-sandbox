@@ -11,6 +11,8 @@
 </template>
 
 <script>
+import Backbone from 'backbone'
+
 export default {
     name: 'Visits',
 
@@ -24,18 +26,21 @@ export default {
     created: function() {
         let self = this
         // Get visits for this user
-        let url = this.$store.getters.apiRoot + 'proposal/visits'
-        this.$http.get(url, { 'params': {'all': '1'}})
-        .then(resp => {
-            console.log(JSON.stringify(resp.data))
+        let url = this.$store.getters.apiRoot + '/proposal/visits'
+        Backbone.ajax({
+            url: url,
+            data: {'all': '1'},
+            success: function(resp) {
+                console.log(JSON.stringify(resp.data))
                 self.total = resp.data.total
                 self.visits = resp.data.data
                 console.log(self.total)
                 console.log(self.visits)
-          })
-          .catch(err => {
+            },
+            error: function(err) {
               console.log("Error getting visits" + err)
-          })
+            }
+        })
     }
 }
 </script>

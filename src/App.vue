@@ -1,6 +1,6 @@
 <template>
   <div id="wrapper">
-    <Header />
+    <Header v-bind:prop="proposal" v-bind:staff_menus="menus"/>
     <div class="tw-container tw-mx-auto">
       <Sidebar />
       <div class="cont_wrap">
@@ -15,6 +15,7 @@
 
 
 <script>
+import Backbone from 'backbone'
 import Header from './js/components/header.vue'
 import Footer from './js/components/footer.vue'
 import Sidebar from './js/components/sidebar.vue'
@@ -26,21 +27,32 @@ export default {
         Footer,
         Sidebar,
     },
+    data: function() {
+      return {
+        menus: [
+          {icon: 'fa-cogs', link: '/settings', description: 'Overview'},
+          {icon: 'fa-pie-chart', link: '/stats', description: 'Beamline Statistics'},
+          {icon: 'fa-truck', link: '/dewars', description: 'Logistics'},
+        ]
+      }
+    },
+    computed: {
+      proposal: function() {
+        return this.$store.getters.currentProposal
+      },
+      token: function() {
+        return this.$store.getters.token
+      },
+    },
     created: function () {
       // Do we have a local token?
-      let token = localStorage.getItem('token')
+      let token = sessionStorage.getItem('token')
       if (token) {
         // Ensure we update our token and set the auth key
         this.$store.commit('auth_success', token, '')
       }
-      // this.$http.interceptors.response.use(undefined, function (err) {
-      //   return new Promise(function (resolve, reject) {
-      //     if (err.status === 401 && err.config && !err.config.__isRetryRequest) {
-      //       this.$store.dispatch(logout)
-      //     }
-      //     throw err;
-      //   });
-      // });
+    },
+    methods: {
     }
 }
 </script>
