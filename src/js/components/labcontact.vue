@@ -11,7 +11,7 @@
                     </span>
             </div>
 
-            <tabs>
+            <tabs class="tw-w-1/2">
                 <tab name="Contact Information" :selected="true">
 
                     <form class="tw-content-background">

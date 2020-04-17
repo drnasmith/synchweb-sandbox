@@ -10,6 +10,8 @@ import ListShipments from './js/components/shipmentList.vue'
 import LabContacts from './js/views/labcontacts.vue'
 import LabContact from './js/components/labcontact.vue'
 import BackboneTest from './js/views/bbtest.vue'
+import Proteins from './js/views/proteins.vue'
+import Dewars from './js/views/registeredDewars.vue'
 
 Vue.use(Router)
 
@@ -71,6 +73,16 @@ let router = new Router({
       name: 'contact',
       component: LabContact,
       props: true
+    },
+    {
+      path: '/proteins',
+      name: 'proteins',
+      component: Proteins,
+    },
+    {
+      path: '/dewars',
+      name: 'dewars',
+      component: Dewars,
     },
     {
       path: '/test',
