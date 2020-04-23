@@ -1,22 +1,47 @@
 <template>
     <div id="visits" class="content">
         <h1>Visits View</h1>
-        <ul>
-            <li v-for="(visit, index) in visits" v-bind:key='index'>
-                {{visit.VISIT}}
-            </li>
-        </ul>
-        <p>There are {{total}} proposals</p>
+        <div class="wrapper">
+            <div class="perp"></div>
+            <table-component
+                v-bind:headers="[
+                    {'title': 'Start', 'key':'STARTDATE'}, 
+                    {'title': 'End', 'key':'ENDDATE'}, 
+                    {'title': 'Visit Number', 'key':'VIS'}, 
+                    {'title': 'Session Type', 'key':'SESSIONTYPE'}, 
+                    {'title': 'Beamline', 'key':'BEAMLINENAME'},
+                    {'title': '# Data Collections', 'key':'DCCOUNT'}
+                ]"
+                v-bind:data="visits"
+                v-on:row-clicked="onSelected">
+            </table-component>
+
+            <!-- If using a backbone collection use the totalRecords field -->
+            <pagination-component 
+                initialPage="0"
+                :totalRecords="total"
+                v-on:page-changed="onPageChange">
+            </pagination-component>
+
+        </div>
     </div>
 </template>
 
 <script>
 import Backbone from 'backbone'
 
+import TableComponent from '../components/utils/table.vue'
+import PaginationComponent from '../components/utils/pagination.vue'
+
 export default {
     name: 'Visits',
 
-    data: function() {
+    components: {
+        'table-component': TableComponent,
+        'pagination-component': PaginationComponent,
+    },
+
+data: function() {
         return {
             total: 0,
             visits: []
@@ -29,11 +54,11 @@ export default {
         let url = this.$store.getters.apiRoot + '/proposal/visits'
         Backbone.ajax({
             url: url,
-            data: {'all': '1'},
+            data: {'per_page': 15, 'page': 1, 'prop': this.$store.getters.currentProposal},
             success: function(resp) {
                 console.log(JSON.stringify(resp.data))
-                self.total = resp.data.total
-                self.visits = resp.data.data
+                self.total = resp.total
+                self.visits = resp.data
                 console.log(self.total)
                 console.log(self.visits)
             },

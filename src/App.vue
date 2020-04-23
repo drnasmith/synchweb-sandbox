@@ -1,8 +1,8 @@
 <template>
   <div id="wrapper">
     <Header v-bind:prop="proposal" v-bind:staff_menus="menus"/>
+    <Navbar v-bind:prop="proposal" />
     <div class="tw-container tw-mx-auto">
-      <Sidebar />
       <div class="cont_wrap">
           <div class="tw-w-full tw-mx-2">
               <router-view></router-view>
@@ -19,6 +19,7 @@ import Backbone from 'backbone'
 import Header from './js/components/header.vue'
 import Footer from './js/components/footer.vue'
 import Sidebar from './js/components/sidebar.vue'
+import Navbar from './js/components/navbar.vue'
 
 export default {
     name: 'App',
@@ -26,6 +27,7 @@ export default {
         Header,
         Footer,
         Sidebar,
+        Navbar,
     },
     data: function() {
       return {

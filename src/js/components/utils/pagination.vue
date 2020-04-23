@@ -46,6 +46,9 @@ export default {
     computed: {
         // Calculate total number of pages
         maxPages: function() {
+            if (this.totalRecords < 1) {
+                return 1
+            }
             return Math.ceil(this.totalRecords / this.perPage)
         }
     },

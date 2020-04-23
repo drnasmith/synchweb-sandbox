@@ -75,6 +75,69 @@
                     </form>              
                 </tab>
 
+                <tab name="Organization / Laboratory Info">
+
+                    <form class="tw-content-background">
+                        <h1 class="tw-text-xl tw-font-hairline tw-mb-6 tw-text-center">Organization / Laboratory Information</h1>
+
+                        <div class="md:tw-flex md:tw-items-top tw-mb-4">
+                            <div class="md:tw-w-2/5">
+                                <label 
+                                    class="tw-text-sm tw-mb-2" 
+                                    for="labname">Organisation Name<i class="tw-block tw-text-xs tw-mb-2 tw-text-left">Name of the contact company/university</i>
+                                </label>
+                            </div>
+                            <div class="md:tw-w-3/5">
+                                <input v-bind:readonly="!isEditable" class="tw-shadow tw-border tw-rounded tw-w-full tw-p-1 tw-text-gray-700 tw-leading-tight focus:tw-outline-none focus:tw-shadow-outline" v-model="labcontact.LABNAME" type="text" name="labname"/>
+                            </div>
+                        </div>
+
+                        <div v-for="(line, index) in address" :key="index" class="md:tw-flex md:tw-items-top tw-mb-4">
+                            <div class="md:tw-w-2/5">
+                                <label 
+                                    class="tw-text-sm tw-mb-2" 
+                                    for="'address'+index">Address Line {{index+1}}<i class="tw-block tw-text-xs tw-mb-2 tw-text-left"></i></label>
+                            </div>
+                            <div class="md:tw-w-3/5">
+                                <input v-bind:readonly="!isEditable" class="tw-shadow tw-border tw-rounded tw-w-full tw-p-1 tw-text-gray-700 tw-leading-tight focus:tw-outline-none focus:tw-shadow-outline" v-model="line.line" type="text" name="'address' + index"/>
+                            </div>
+                        </div>
+
+                        <div class="md:tw-flex md:tw-items-top tw-mb-4">
+                            <div class="md:tw-w-2/5">
+                                <label 
+                                    class="tw-text-sm tw-mb-2" 
+                                    for="city">PostCode<i class="tw-block tw-text-xs tw-mb-2 tw-text-left"></i></label>
+                            </div>
+                            <div class="md:tw-w-3/5">
+                                <input v-bind:readonly="!isEditable" class="tw-shadow tw-border tw-rounded tw-w-full tw-p-1 tw-text-gray-700 tw-leading-tight focus:tw-outline-none focus:tw-shadow-outline" v-model="labcontact.POSTCODE" type="text" name="postcode"/>
+                            </div>
+                        </div>
+
+                        <div class="md:tw-flex md:tw-items-top tw-mb-4">
+                            <div class="md:tw-w-2/5">
+                                <label 
+                                    class="tw-text-sm tw-mb-2" 
+                                    for="city">City<i class="tw-block tw-text-xs tw-mb-2 tw-text-left"></i></label>
+                            </div>
+                            <div class="md:tw-w-3/5">
+                                <input v-bind:readonly="!isEditable" class="tw-shadow tw-border tw-rounded tw-w-full tw-p-1 tw-text-gray-700 tw-leading-tight focus:tw-outline-none focus:tw-shadow-outline" v-model="labcontact.CITY" type="text" name="city"/>
+                            </div>
+                        </div>
+
+                        <div class="md:tw-flex md:tw-items-top tw-mb-4">
+                            <div class="md:tw-w-2/5">
+                                <label 
+                                    class="tw-text-sm tw-mb-2" 
+                                    for="country">Country<i class="tw-block tw-text-xs tw-mb-2 tw-text-left"></i></label>
+                            </div>
+                            <div class="md:tw-w-3/5">
+                                <input v-bind:readonly="!isEditable" class="tw-shadow tw-border tw-rounded tw-w-full tw-p-1 tw-text-gray-700 tw-leading-tight focus:tw-outline-none focus:tw-shadow-outline" v-model="labcontact.COUNTRY" type="text" name="country"/>
+                            </div>
+                        </div>
+
+                    </form>              
+                </tab>
                 <tab name="Courier Information">
                     <form class="tw-content-background">
                         <h1 class="tw-text-xl tw-font-hairline tw-text-center">Courier Information</h1>
@@ -141,69 +204,6 @@
                     </form>
                 </tab>
 
-                <tab name="Organization / Laboratory Info">
-
-                    <form class="tw-content-background">
-                        <h1 class="tw-text-xl tw-font-hairline tw-mb-6 tw-text-center">Organization / Laboratory Information</h1>
-
-                        <div class="md:tw-flex md:tw-items-top tw-mb-4">
-                            <div class="md:tw-w-2/5">
-                                <label 
-                                    class="tw-text-sm tw-mb-2" 
-                                    for="labname">Organisation Name<i class="tw-block tw-text-xs tw-mb-2 tw-text-left">Name of the contact company/university</i>
-                                </label>
-                            </div>
-                            <div class="md:tw-w-3/5">
-                                <input v-bind:readonly="!isEditable" class="tw-shadow tw-border tw-rounded tw-w-full tw-p-1 tw-text-gray-700 tw-leading-tight focus:tw-outline-none focus:tw-shadow-outline" v-model="labcontact.LABNAME" type="text" name="labname"/>
-                            </div>
-                        </div>
-
-                        <div v-for="(line, index) in address" :key="index" class="md:tw-flex md:tw-items-top tw-mb-4">
-                            <div class="md:tw-w-2/5">
-                                <label 
-                                    class="tw-text-sm tw-mb-2" 
-                                    for="'address'+index">Address Line {{index+1}}<i class="tw-block tw-text-xs tw-mb-2 tw-text-left"></i></label>
-                            </div>
-                            <div class="md:tw-w-3/5">
-                                <input v-bind:readonly="!isEditable" class="tw-shadow tw-border tw-rounded tw-w-full tw-p-1 tw-text-gray-700 tw-leading-tight focus:tw-outline-none focus:tw-shadow-outline" v-model="line.line" type="text" name="'address' + index"/>
-                            </div>
-                        </div>
-
-                        <div class="md:tw-flex md:tw-items-top tw-mb-4">
-                            <div class="md:tw-w-2/5">
-                                <label 
-                                    class="tw-text-sm tw-mb-2" 
-                                    for="city">PostCode<i class="tw-block tw-text-xs tw-mb-2 tw-text-left"></i></label>
-                            </div>
-                            <div class="md:tw-w-3/5">
-                                <input v-bind:readonly="!isEditable" class="tw-shadow tw-border tw-rounded tw-w-full tw-p-1 tw-text-gray-700 tw-leading-tight focus:tw-outline-none focus:tw-shadow-outline" v-model="labcontact.POSTCODE" type="text" name="postcode"/>
-                            </div>
-                        </div>
-
-                        <div class="md:tw-flex md:tw-items-top tw-mb-4">
-                            <div class="md:tw-w-2/5">
-                                <label 
-                                    class="tw-text-sm tw-mb-2" 
-                                    for="city">City<i class="tw-block tw-text-xs tw-mb-2 tw-text-left"></i></label>
-                            </div>
-                            <div class="md:tw-w-3/5">
-                                <input v-bind:readonly="!isEditable" class="tw-shadow tw-border tw-rounded tw-w-full tw-p-1 tw-text-gray-700 tw-leading-tight focus:tw-outline-none focus:tw-shadow-outline" v-model="labcontact.CITY" type="text" name="city"/>
-                            </div>
-                        </div>
-
-                        <div class="md:tw-flex md:tw-items-top tw-mb-4">
-                            <div class="md:tw-w-2/5">
-                                <label 
-                                    class="tw-text-sm tw-mb-2" 
-                                    for="country">Country<i class="tw-block tw-text-xs tw-mb-2 tw-text-left"></i></label>
-                            </div>
-                            <div class="md:tw-w-3/5">
-                                <input v-bind:readonly="!isEditable" class="tw-shadow tw-border tw-rounded tw-w-full tw-p-1 tw-text-gray-700 tw-leading-tight focus:tw-outline-none focus:tw-shadow-outline" v-model="labcontact.COUNTRY" type="text" name="country"/>
-                            </div>
-                        </div>
-
-                    </form>              
-                </tab>
 
             </tabs>
         </div>
@@ -212,8 +212,8 @@
 
 <script>
 import Backbone from 'backbone'
-import Tab from './tab.vue'
-import Tabs from './tabs2.vue'
+import Tab from '../../components/tab.vue'
+import Tabs from '../../components/tabs2.vue'
 
 export default {
     name: 'Login',

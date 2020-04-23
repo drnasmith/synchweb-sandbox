@@ -26,6 +26,7 @@
                             {'title': 'Validated', 'key':'EXTERNAL'},
                             ]"
             v-bind:data="proteins"
+            v-on:sort-by="onSortBy"
             v-on:row-clicked="onSelected">
         </table-component>
 
@@ -70,11 +71,15 @@ export default {
             console.log("Protein Selected " + item['ACRONYM'])
             // Navigate to specific protein view...
         },
+        onSortyBy: function(item) {
+            console.log("Protein Sort By " + item)
+            // Navigate to specific protein view...
+        },
         onAdd: function() {
             console.log("Add Protein " )
         },
-        onPageChange: function(pageNumber) {
-            console.log("Re-order list of proteins...")
+        onPageChange: function(pageData) {
+            console.log("Re-order list of proteins..." + pageData['current-page'] + ", " + pageData['page-size'])
         },
         getProteins: function() {
             let self = this

@@ -1,12 +1,16 @@
 <template>
     <div id="shipments" class="content">
+        <h1>Shipment List</h1>
         <p>There are {{total}} shipments for {{proposal}}</p>
         <button 
             class="button submit"
             v-on:click="onAddShipment"><i class="fa fa-plus icon"></i> Create New Shipment</button>
 
         <div class="tw-flex">
-            <div v-for="(shipment, index) in shipments" v-bind:key='index'>
+            <div 
+                v-for="(shipment, index) in shipments" v-bind:key='index'
+                @click="onSelect(shipment)"
+                >
                 <ShippingCard v-bind:shipment="shipment" message='Hello from shipments'></ShippingCard>
             </div>
         </div>
@@ -14,7 +18,7 @@
 </template>
 
 <script>
-import Shipments from '../collections/shipments.js'
+import Shipments from 'collections/shipments.js'
 import ShippingCard from './shipmentcard.vue'
 
 export default {
@@ -54,7 +58,11 @@ export default {
         },
         onAddShipment: function() {
             console.log("Create Shipment")
-            this.$emit('navigate', 'addShipment2')
+            this.$emit('navigate', {name: 'addShipment2'})
+        },
+        onSelect: function(shipment) {
+            console.log("View Shipment shipment " + shipment.SHIPPINGID)
+            this.$emit('navigate', {url: '/shipments/'+shipment.SHIPPINGID})
         }
     }
 }

@@ -1,16 +1,6 @@
 <template>
     <div id="proposals" class="content">
         <h1>Proposals View</h1>
-        <ul>
-            <li v-for="(proposal, index) in proposals" v-bind:key='index'>
-                <a href='#' v-on:click.prevent="onSelectProposal(proposal.PROPOSALCODE+proposal.PROPOSALNUMBER)">{{proposal.TITLE}}</a>
-            </li>
-        </ul>
-        <router-link to="shipments/">View Shipments</router-link>
-        <router-link to="contacts/">View Lab Contacts</router-link>
-        <router-link to="proteins/">View Proteins</router-link>
-        <router-link to="dewars/">View Registered Dewars</router-link>
-
         <div class="wrapper">
             <div class="perp"></div>
             <table-component
@@ -57,12 +47,11 @@ export default {
     },
 
     methods: {
-        onSelectProposal: function(prop) {
+        onSelected: function(proposal) {
+            let prop = proposal.PROPOSALCODE+proposal.PROPOSALNUMBER
+            console.log("Selected Prop: " + prop)
             this.$store.commit('save_proposal', prop)
-        },
-        onSelected: function(item) {
-            console.log("Proposal Selected " + item['TITLE'])
-            // Navigate to specific protein view...
+            this.$router.push('/visits')
         },
         onPageChange: function(pageNumber) {
             console.log("Re-order list of records...")
