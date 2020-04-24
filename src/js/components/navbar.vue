@@ -1,6 +1,6 @@
 <template>
 <section id="navbar" class="">
-    <div v-if="currentProposal" id="navbar" class="tw-flex tw-justify-between tw-items-center tw-h-8 tw-bg-gray-300">
+    <div v-if="currentProposal" class="tw-flex tw-justify-between tw-items-center tw-h-8 tw-bg-gray-300">
       <!-- Left aligned items -->
       <div class="tw-flex">
         <NavbarMenuItem :title="currentProposal" :menu="proposalMenu"/>

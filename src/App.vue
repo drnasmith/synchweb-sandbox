@@ -10,7 +10,7 @@
           </div>
       </div>
     </div>
-    <footer />
+    <footer-panel />
   </div>
 </template>
 
@@ -27,7 +27,7 @@ export default {
     name: 'App',
     components: {
         'header-menu': Header,
-        'footer': Footer,
+        'footer-panel': Footer,
         'sidebar': Sidebar,
         'navbar': Navbar,
         'notification': Notification,

@@ -10,7 +10,7 @@
                   v-for="(item, index) in menu" 
                   :key="index" 
                   :to="item.link"
-                  class="tw-block tw-border-b tw-px-2 tw-py-4 tw-border-gray-800 tw-bg-gray-300 hover:tw-bg-blue-400 tw-text-gray-800 hover:tw-text-white">{{item.name}}</router-link>
+                  class="tw-block tw-border-b tw-px-2 tw-py-4 tw-border-gray-500 tw-bg-gray-300 hover:tw-bg-blue-400 tw-text-gray-800 hover:tw-text-white">{{item.name}}</router-link>
             </div>
         </div>
     </div>

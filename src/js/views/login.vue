@@ -1,5 +1,7 @@
 <template>
     <div id="vue-login" class="content">
+        <p class="tw-m-4 tw-p-4 tw-text-4xl tw-text-center tw-mx-auto tw-border-b tw-border-gray-500">SynchWeb Experiment Information Management</p>
+
         <h1>Login View</h1>
             <form class="tw-content-background tw-shadow-md tw-rounded tw-px-8 tw-pt-6 tw-pb-8 tw-mb-4">
                 <div class="tw-mb-4">
