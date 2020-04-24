@@ -7,6 +7,7 @@ import Visits from 'views/visits.vue'
 import Proposals from 'views/proposals.vue'
 import Proteins from 'views/proteins.vue'
 import Dewars from 'views/registeredDewars.vue'
+import Feedback from 'views/feedback/feedback.vue'
 
 import ShipmentRoutes from 'views/shipment/routes.js'
 import ContactRoutes from 'views/contacts/routes.js'
@@ -46,6 +47,11 @@ let routes = [
     path: '/dewars',
     name: 'dewars',
     component: Dewars,
+  },
+  {
+    path: '/feedback',
+    name: 'feedback',
+    component: Feedback,
   },
 ]
 

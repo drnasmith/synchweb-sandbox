@@ -17,7 +17,11 @@ export default new Vuex.Store({
     user: '',
     token: '',
     proposal: '',
-    visit: ''
+    visit: '',
+    notification: {
+      level: '',
+      message: ''
+    }
   },
   mutations: {
       save_proposal(state, prop) {
@@ -34,6 +38,15 @@ export default new Vuex.Store({
       },
       clear_visit(state) {
         state.visit = ''
+      },      
+      set_notification(state, payload) {
+        console.log("Setting notification " + payload.message)
+        state.notification.level = payload.level
+        state.notification.message = payload.message
+      },
+      clear_notification(state) {
+        console.log("Clearing notification")
+        state.notification = {level: '', message: ''}
       },      
       auth_request(state){
         state.status = 'loading'
@@ -90,5 +103,6 @@ export default new Vuex.Store({
     authStatus: state => state.status,
     apiRoot: state => state.apiRoot,
     currentProposal: state => state.proposal,
+    notification: state => state.notification,
   }
 })

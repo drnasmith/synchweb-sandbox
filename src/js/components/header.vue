@@ -14,7 +14,7 @@
           :alt="item.description">
           <span class="fa fa-2x" v-bind:class="item.icon"></span></a>
         
-        <a class="tw-mx-1" href="#"><i class="fa fa-2x fa-comment"/> Feedback</a>
+        <a class="tw-mx-1" href="/feedback"><i class="fa fa-2x fa-comment"/> Feedback</a>
         <div class="tw-relative" @mouseover="showHelpMenu = true" @mouseleave="showHelpMenu=false">
           <a class="tw-mx-1" href="#" ><i class="fa fa-2x fa-question"/> Help</a>
           <div v-if="showHelpMenu">

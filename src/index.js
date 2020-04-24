@@ -12,16 +12,19 @@ var FontAwesome = require('font-awesome/css/font-awesome.css')
 //   })
 
 import Vue from 'vue'
+import Backbone from 'backbone'
+import axios from 'axios'
+import Vuelidate from 'vuelidate'
+
 import App from './App.vue'
 import router from './router'
 import store from './store'
-import Backbone from 'backbone'
-
-import axios from 'axios'
 
 Vue.config.productionTip = false
 
 Vue.prototype.$http = axios
+
+Vue.use(Vuelidate)
 
 new Vue({
   router,

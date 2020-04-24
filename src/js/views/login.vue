@@ -45,6 +45,7 @@ export default {
             this.$store.dispatch('login', credentials)
             .then(() => this.$router.push('/proposals'))
             .catch(err => console.log(err))
+
         }
     }
 }

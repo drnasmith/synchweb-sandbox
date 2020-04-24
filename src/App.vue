@@ -1,5 +1,6 @@
 <template>
   <div id="wrapper">
+    <notification/>
     <Header v-bind:prop="proposal" v-bind:staff_menus="menus"/>
     <Navbar v-bind:prop="proposal" />
     <div class="tw-container tw-mx-auto">
@@ -20,6 +21,7 @@ import Header from './js/components/header.vue'
 import Footer from './js/components/footer.vue'
 import Sidebar from './js/components/sidebar.vue'
 import Navbar from './js/components/navbar.vue'
+import Notification from './js/components/utils/notification.vue'
 
 export default {
     name: 'App',
@@ -28,6 +30,7 @@ export default {
         Footer,
         Sidebar,
         Navbar,
+        'notification': Notification,
     },
     data: function() {
       return {
