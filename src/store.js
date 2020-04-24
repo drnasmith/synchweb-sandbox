@@ -93,6 +93,7 @@ export default new Vuex.Store({
   },
   getters: {
     isLoggedIn: state => !!state.token,
+    isStaff: state => true,
     token: function(state) {
       if (!state.token) {
         // Any in storage?

@@ -6,7 +6,7 @@
                 <thead>
                     <th 
                         v-for="(header,index) in headers" :key="index"
-                        class="sortable renderable"
+                        class=""
                         @click="$emit('sort-by', header.key)">{{header.title}}</th>
                 </thead>
                 <!-- Change row[header.key] to row.get(header.key) if using Backbone models -->
@@ -15,7 +15,7 @@
                         v-on:click="$emit('row-clicked', row)">
                         <td 
                             v-for="(header, index) in headers" :key="index" 
-                            class="sortable renderable">{{row[header.key]}}</td>
+                            class="">{{row[header.key]}}</td>
                     </tr>
                 </tbody>
                 <tbody v-else>

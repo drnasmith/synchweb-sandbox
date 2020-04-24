@@ -1,8 +1,8 @@
 <template>
   <div id="wrapper">
     <notification/>
-    <Header v-bind:prop="proposal" v-bind:staff_menus="menus"/>
-    <Navbar v-bind:prop="proposal" />
+    <header-menu v-bind:prop="proposal" v-bind:staff_menus="menus"/>
+    <navbar v-bind:prop="proposal" />
     <div class="tw-container tw-mx-auto">
       <div class="cont_wrap">
           <div class="tw-w-full tw-mx-2">
@@ -10,7 +10,7 @@
           </div>
       </div>
     </div>
-    <Footer />
+    <footer />
   </div>
 </template>
 
@@ -26,10 +26,10 @@ import Notification from './js/components/utils/notification.vue'
 export default {
     name: 'App',
     components: {
-        Header,
-        Footer,
-        Sidebar,
-        Navbar,
+        'header-menu': Header,
+        'footer': Footer,
+        'sidebar': Sidebar,
+        'navbar': Navbar,
         'notification': Notification,
     },
     data: function() {

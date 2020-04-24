@@ -53,8 +53,7 @@ module.exports = (env, argv)  => {
   resolve: {
     alias: {
       // Vue packages from npm (vee-validate requires promise polyfill - also npm)
-      vue: 'vue/dist/vue.min',
-      veevalidate: 'vee-validate/dist/vee-validate.min',
+      vue: 'vue/dist/vue',
       'underscore': 'lodash'  
     },
     modules: [

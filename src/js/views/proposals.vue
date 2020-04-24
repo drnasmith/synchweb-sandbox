@@ -6,6 +6,7 @@
             <table-component
                 v-bind:headers="[{'title': 'Proposal Code', 'key':'PROPOSALCODE'}, 
                                 {'title': 'Number', 'key':'PROPOSALNUMBER'},
+                                {'title': 'Visits', 'key':'VCOUNT'},
                                 {'title': 'Title', 'key':'TITLE'},
                                 ]"
                 v-bind:data="proposals"
