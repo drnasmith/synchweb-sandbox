@@ -1,7 +1,7 @@
 <template>
     <div id="vue-labcontacts" class="content tw-container tw-mx-auto">
-        <h1>LabContact Details</h1>
-        <contact-form :id="id"/>
+        <h1>Add LabContact</h1>
+        <contact-form :edit="true"/>
     </div>
 </template>
 
@@ -9,12 +9,9 @@
 import ContactForm from 'views/contacts/contactForm.vue'
 
 export default {
-    name: 'LabContact',
+    name: 'AddContact',
     components: {
         'contact-form': ContactForm,
-    },
-    props: {
-        'id': String,
     },
 }
 </script>

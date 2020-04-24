@@ -2,6 +2,7 @@ import Page from 'views/page.vue'
 
 import LabContacts from 'views/contacts/labcontacts.vue'
 import LabContact from 'views/contacts/labcontact.vue'
+import AddContact from 'views/contacts/addContact.vue'
 
 export default 
 {
@@ -11,10 +12,17 @@ export default
     children: [
         {
             path: '',
+            name: 'listContacts',
             component: LabContacts,
         },
         {
-            path: ':id',
+            path: 'add',
+            name: 'addContact',
+            component: AddContact,
+        },
+        // Adding /id makes route determination clearer - does not get confused with 'add' as :id
+        {
+            path: 'id/:id',
             name: 'contact',
             component: LabContact,
             props: true

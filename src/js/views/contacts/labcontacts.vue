@@ -30,7 +30,7 @@
 
             <!-- If using a backbone collection use the totalRecords field -->
             <pagination-component 
-                initialPage="0"
+                :initialPage="0"
                 :totalRecords="total"
                 v-on:page-changed="onPageChange">
             </pagination-component>
@@ -56,7 +56,8 @@ export default {
     data: function() {
         return {
             total: 0,
-            labcontacts: []
+            labcontacts: [],
+            searchTerm: ''
         }
     },
 
@@ -79,14 +80,14 @@ export default {
         onSelected: function(item) {
             console.log("Lab Contact Selected " + item['CARDNAME'])
             // Navigate to specific view...
-            this.$router.push('/contacts/' + item['LABCONTACTID'])
+            this.$router.push('contacts/id/' + item['LABCONTACTID'])
         },
-        onSortyBy: function(item) {
+        onSortBy: function(item) {
             console.log("Sort By " + item)
             // Navigate to specific view...
         },
         onAdd: function() {
-            console.log("Add Protein " )
+            this.$emit('navigate', {url: '/contacts/add'})
         },
         onPageChange: function(pageData) {
             console.log("Re-order list of contacts..." + pageData['current-page'] + ", " + pageData['page-size'])

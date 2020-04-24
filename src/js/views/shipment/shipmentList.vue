@@ -58,11 +58,13 @@ export default {
         },
         onAddShipment: function() {
             console.log("Create Shipment")
-            this.$emit('navigate', {name: 'addShipment2'})
+            // Can use a named route...
+            this.$emit('navigate', {name: 'addShipment'})
         },
         onSelect: function(shipment) {
             console.log("View Shipment shipment " + shipment.SHIPPINGID)
-            this.$emit('navigate', {url: '/shipments/'+shipment.SHIPPINGID})
+            //...or a url
+            this.$emit('navigate', {url: '/shipments/id/'+shipment.SHIPPINGID})
         }
     }
 }

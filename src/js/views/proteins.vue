@@ -32,7 +32,7 @@
 
         <!-- If using a backbone collection use the totalRecords field -->
         <pagination-component 
-            initialPage="0"
+            :initialPage="0"
             :totalRecords="total"
             v-on:page-changed="onPageChange">
         </pagination-component>
@@ -71,7 +71,7 @@ export default {
             console.log("Protein Selected " + item['ACRONYM'])
             // Navigate to specific protein view...
         },
-        onSortyBy: function(item) {
+        onSortBy: function(item) {
             console.log("Protein Sort By " + item)
             // Navigate to specific protein view...
         },

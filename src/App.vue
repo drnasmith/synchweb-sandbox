@@ -17,11 +17,11 @@
 
 <script>
 import Backbone from 'backbone'
-import Header from './js/components/header.vue'
-import Footer from './js/components/footer.vue'
-import Sidebar from './js/components/sidebar.vue'
-import Navbar from './js/components/navbar.vue'
-import Notification from './js/components/utils/notification.vue'
+import Header from 'components/header.vue'
+import Footer from 'components/footer.vue'
+import Sidebar from 'components/sidebar.vue'
+import Navbar from 'components/navbar.vue'
+import Notification from 'components/utils/notification.vue'
 
 export default {
     name: 'App',

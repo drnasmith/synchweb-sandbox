@@ -18,7 +18,7 @@
 
             <!-- If using a backbone collection use the totalRecords field -->
             <pagination-component 
-                initialPage="0"
+                :initialPage="0"
                 :totalRecords="total"
                 v-on:page-changed="onPageChange">
             </pagination-component>
@@ -41,7 +41,7 @@ export default {
         'pagination-component': PaginationComponent,
     },
 
-data: function() {
+    data: function() {
         return {
             total: 0,
             visits: []
@@ -66,6 +66,21 @@ data: function() {
               console.log("Error getting visits" + err)
             }
         })
+    },
+    methods: {
+
+        onSelected: function(item) {
+            console.log("Visit Selected " + item['TITLE`'])
+            // Navigate to specific view...
+            this.$router.push('/visits/' + item['SESSIONID'])
+        },
+        onSortBy: function(item) {
+            console.log("Sort By " + item)
+            // Navigate to specific view...
+        },
+        onPageChange: function(pageData) {
+            console.log("Re-order list of contacts..." + pageData['current-page'] + ", " + pageData['page-size'])
+        },
     }
 }
 </script>

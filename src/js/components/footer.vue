@@ -10,8 +10,10 @@
 <script>
 export default {
     name: 'Footer',
-    data: {
-      currentYear: document.write(new Date().getFullYear())
+    data: function() {
+      return {
+        currentYear: document.write(new Date().getFullYear())
+      }
     }
 }
 </script>

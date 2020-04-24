@@ -17,14 +17,13 @@ export default
       },
       {
         path: 'new',
-        name: 'addShipment2',
+        name: 'addShipment',
         component: AddShipment
       },
       {
-        path: ':id',
+        path: 'id/:id',
         name: 'viewShipment',
         component: ViewShipment,
-        props: true
       }
     ]
 }
