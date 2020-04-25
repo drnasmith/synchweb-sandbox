@@ -28,10 +28,13 @@ export default new Vuex.Store({
         console.log("Saved proposal " + prop)
         state.proposal = prop
         app.prop = prop
+
+        sessionStorage.setItem('prop', prop)
       },
       clear_proposal(state) {
         state.proposal = ''
         app.prop = ''
+        sessionStorage.removeItem('prop')
       },
       save_visit(state, visit) {
         state.visit = visit
@@ -64,7 +67,9 @@ export default new Vuex.Store({
       logout(state){
         state.status = ''
         state.token = ''
+        state.proposal = ''
         sessionStorage.removeItem('token')
+        sessionStorage.removeItem('prop')
       },      
   },
   actions: {
@@ -103,7 +108,16 @@ export default new Vuex.Store({
     },
     authStatus: state => state.status,
     apiRoot: state => state.apiRoot,
-    currentProposal: state => state.proposal,
+    currentProposal: function(state) {
+      // If we have no proposal set, check if there is one in storage
+      if (!state.proposal) {
+        let prop = sessionStorage.getItem('prop')
+        if (prop) {
+          state.proposal = prop
+        }
+      }
+      return state.proposal
+    },
     notification: state => state.notification,
   }
 })

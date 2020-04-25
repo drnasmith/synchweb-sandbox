@@ -3,7 +3,7 @@
     <notification/>
     <header-menu v-bind:prop="proposal" v-bind:staff_menus="menus"/>
     <navbar v-bind:prop="proposal" />
-    <div class="tw-container tw-mx-auto">
+    <div class="tw-w-10/12 tw-mx-auto">
       <div class="cont_wrap">
           <div class="tw-w-full tw-mx-2">
               <router-view></router-view>
