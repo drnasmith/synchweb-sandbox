@@ -4,7 +4,8 @@
       <!-- Left aligned items -->
       <div class="tw-flex">
         <NavbarMenuItem :title="currentProposal" :menu="proposalMenu"/>
-        <NavbarMenuItem title="Projects" :menu="projectMenu"/>
+        <NavbarMenuItem title="Projects" link="/projects" :menu="projectMenu"/>
+        <NavbarMenuItem title="Unit cell" link="/cell" />
       </div>
       <!-- Right aligned items -->
       <div class="tw-flex">

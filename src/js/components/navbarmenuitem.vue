@@ -1,9 +1,8 @@
 <template>
     <div class="tw-relative"
-      @click="showMenu = false"
       @mouseover="showMenu = true" 
-      @mouseleave="showMenu=false">
-        <a class="tw-mx-1" href="#" ><i class="fa fa-2x fa-file"/> {{title}}</a>
+      @mouseleave="showMenu = false">
+        <a class="tw-mx-1" :href="link" ><i class="fa fa-2x fa-file"/> {{title}} <i v-if="menu" class="fa fa-chevron-down"/></a>
         <div v-if="showMenu">
             <div class="tw-absolute tw-left-0 tw-ml-1 tw-rounded tw-w-48 tw-py-2">
                 <router-link  
@@ -21,6 +20,7 @@ export default {
     name: 'NavbarMenuItem',
     props: {
       'title': String,
+      'link': String,
       'menu': Array,
     },
     data: function() {

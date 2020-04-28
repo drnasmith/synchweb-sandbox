@@ -11,7 +11,7 @@
         <tabs class="tw-w-1/2">
             <tab name="Contact Information" :selected="true">
 
-                <form class="tw-content-background">
+                <form>
                     <h1 class="tw-text-xl tw-font-hairline tw-mb-6 tw-text-center">Contact Information</h1>
 
                     <div class="md:tw-flex md:tw-items-top tw-mb-4">
@@ -74,7 +74,7 @@
 
             <tab name="Organization / Laboratory Info">
 
-                <form class="tw-content-background">
+                <form>
                     <h1 class="tw-text-xl tw-font-hairline tw-mb-6 tw-text-center">Organization / Laboratory Information</h1>
 
                     <div class="md:tw-flex md:tw-items-top tw-mb-4">
@@ -136,7 +136,7 @@
                 </form>              
             </tab>
             <tab name="Courier Information">
-                <form class="tw-content-background">
+                <form>
                     <h1 class="tw-text-xl tw-font-hairline tw-text-center">Courier Information</h1>
                     <p class="tw-text-md tw-font-bold tw-font-hairline tw-mb-6 tw-text-center">The following information is used for each shipment associated with this contact</p>
 

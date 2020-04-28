@@ -1,12 +1,20 @@
 <template>
 <section>
-
     <transition name="notify">
-        <div v-if="message" class="notification tw-absolute tw-left-0 tw-right-0 tw-top-0 tw-flex tw-justify-center">
-            <div class="tw-rounded tw-shadow tw-p-4 tw-w-full md:tw-w-1/2 tw-font-bold tw-border-2"
-                :class="notificationClass">
-                <span class="tw-font-bold">{{level | upper}}: </span>
-                <span class="tw-font-normal">{{message}}</span>
+        <div v-if="message" class="notification tw-fixed tw-left-0 tw-right-0 tw-top-0 tw-z-10">
+            <div class="tw-flex tw-flex-col tw-items-center">
+                <div class="tw-rounded tw-shadow tw-p-4 tw-w-full md:tw-w-1/2 tw-font-bold tw-border-2"
+                    :class="notificationClass">
+                    <span class="tw-font-bold">{{level | upper}}: </span>
+                    <span class="tw-font-normal">{{message}}</span>
+                    <span class="tw-font-normal">{{topLevel}}</span>
+                </div>
+                <div class="tw-rounded tw-shadow tw-p-4 tw-w-full md:tw-w-1/2 tw-font-bold tw-border-2"
+                    :class="notificationClass">
+                    <span class="tw-font-bold">{{level | upper}}: </span>
+                    <span class="tw-font-normal">{{message}}</span>
+                    <span class="tw-font-normal">{{topLevel}}</span>
+                </div>
             </div>
         </div>
     </transition>
@@ -32,6 +40,7 @@ export default {
     watch: {
         message: function(val) {
             console.log("Notification message has changed")
+
             let self = this
             setTimeout(function() {
                 self.$store.commit('clear_notification')
@@ -61,7 +70,7 @@ export default {
                 classes += 'tw-border-gray-500 tw-bg-gray-200'
             }
             return classes
-        }
+        },
     },
     methods: {
     },

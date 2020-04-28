@@ -3,7 +3,7 @@
         <p class="tw-m-4 tw-p-4 tw-text-4xl tw-text-center tw-mx-auto tw-border-b tw-border-gray-500">SynchWeb Experiment Information Management</p>
 
         <h1>Login View</h1>
-            <form class="tw-content-background tw-shadow-md tw-rounded tw-px-8 tw-pt-6 tw-pb-8 tw-mb-4">
+            <form class="tw-shadow-md tw-rounded tw-px-8 tw-pt-6 tw-pb-8 tw-mb-4">
                 <div class="tw-mb-4">
                     <label class="tw-block tw-text-gray-700 tw-text-sm tw-font-bold tw-mb-2" for="login">Username (fedid)</label>
                     <input class="tw-shadow tw-border tw-rounded tw-w-full tw-py-2 tw-px-3 tw-text-gray-700 tw-leading-tight focus:tw-outline-none focus:tw-shadow-outline" v-model="username" type="text" name="login"/>
@@ -45,7 +45,7 @@ export default {
             let credentials = { 'login': this.username, 'password': this.password }
 
             this.$store.dispatch('login', credentials)
-            .then(() => this.$router.push('/proposals'))
+            .then(() => this.$router.push('/'))
             .catch(err => console.log(err))
 
         }

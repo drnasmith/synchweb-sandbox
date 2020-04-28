@@ -1,8 +1,8 @@
 <template>
-    <section id="home" class="content">
-        <p class="tw-m-4 tw-p-4 tw-text-4xl tw-text-center tw-mx-auto tw-border-b tw-border-gray-500">SynchWeb Experiment Information Management</p>
+    <section id="home">
         <div v-if="isLoggedIn">
-            <p>Select from your list of proposals by clicking on 'My Proposals' in the header</p>
+
+            <p class="tw-font-page-header tw-mt-4 tw-text-2xl tw-text-center">Time at {{facility}} is: {{ current_date }}</p>
 
             <div class="content">
                 <h1 class="tw-text-gray-900 tw-text-xl tw-border-black tw-border-b tw-mb-2">Current / Next Visits</h1>
@@ -34,11 +34,12 @@
                     </div>
                 </div>
             </div>
-
         </div>
-        <div v-else class="tw-container tw-mx-auto">
+
+        <div v-else class="tw-mx-auto">
+            <p class="tw-m-4 tw-p-4 tw-text-4xl tw-text-center tw-mx-auto tw-border-b tw-border-gray-500">SynchWeb Experiment Information Management</p>
             <div class="tw-text-center tw-text-base">
-                <p>SynchWeb is an integrated Information Management System for X-ray diffraction, Electron Microscopy and other disciplines.</p>
+                <p>SynchWeb is an integrated Information Management System for X-ray diffraction, Electron Microscopy and related disciplines.</p>
                 <p>It is based on the ISPyB database schema, extended to support an increasing number of techniques.</p>
             </div>
             <div class="tw-flex tw-flex-col md:tw-flex-row tw-justify-between">
@@ -75,16 +76,23 @@
                 <p class="tw-text-center tw-text-lg">If you are looking for archived data please visit the data catalogue <a :href="datacatalogue.url">{{datacatalogue.name}}</a></p>
             </div>
         </div>
+        <color-test/>
     </section>
 </template>
 
 <script>
 import Backbone from 'backbone'
+import ColorTest from 'components/utils/colorTest.vue'
 
 export default {
     name: 'Home',
+    components: {
+        'color-test': ColorTest,
+    },
     data() {
         return {
+            facility: 'Diamond',
+            current_date: new Date(),
             datacatalogue: {
                 url: 'https://topcat.diamond.ac.uk',
                 name: 'Topcat',

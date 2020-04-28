@@ -1,13 +1,13 @@
 <template>
-  <div id="wrapper">
+  <div class="tw-bg-content-background">
     <notification/>
     <header-menu v-bind:prop="proposal" v-bind:staff_menus="menus"/>
     <navbar v-bind:prop="proposal" />
-    <div class="tw-w-10/12 tw-mx-auto">
-      <div class="cont_wrap">
-          <div class="tw-w-full tw-mx-2">
-              <router-view></router-view>
-          </div>
+    <div class="tw-w-10/12 tw-mx-auto"> <!-- Sets the main width of the content on screen -->
+      <sidebar />
+      <motd :message="motd"/>
+      <div class="tw-w-full tw-mx-2">
+          <router-view></router-view>
       </div>
     </div>
     <footer-panel />
@@ -21,6 +21,7 @@ import Header from 'components/header.vue'
 import Footer from 'components/footer.vue'
 import Sidebar from 'components/sidebar.vue'
 import Navbar from 'components/navbar.vue'
+import Motd from 'components/utils/motd.vue'
 import Notification from 'components/utils/notification.vue'
 
 export default {
@@ -29,16 +30,20 @@ export default {
         'header-menu': Header,
         'footer-panel': Footer,
         'sidebar': Sidebar,
+        'motd': Motd,
         'navbar': Navbar,
         'notification': Notification,
     },
     data: function() {
       return {
         menus: [
+          {icon: 'fa-line-chart', link: '/reporting', description: 'Reporting'},
+          {icon: 'fa-image', link: '/imaging', description: 'Imaging'},
           {icon: 'fa-cogs', link: '/settings', description: 'Overview'},
-          {icon: 'fa-pie-chart', link: '/stats', description: 'Beamline Statistics'},
+          {icon: 'fa-pie-chart', link: '/stats', description: 'Stats'},
           {icon: 'fa-truck', link: '/dewars', description: 'Logistics'},
-        ]
+        ],
+        motd: 'This is the message of the day'
       }
     },
     computed: {
