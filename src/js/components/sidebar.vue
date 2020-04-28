@@ -67,7 +67,6 @@ export default {
 
     data: function() {
         return {
-            showHelp: false,
             showHelpMenu: false,
             showProposalMenu: false,
         }
@@ -83,10 +82,6 @@ export default {
     },
 
     methods: {
-        showHelp: function() {
-            console.log("Toggle Help")
-            // this.$store.commit('toggleHelp')
-        }
     }
 }
 </script>
