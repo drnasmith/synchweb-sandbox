@@ -12,7 +12,7 @@
             <div v-show="showProposalMenu && proposal">
                 <div class="tw-absolute tw-left-0 tw-mt-4 tw-w-full">
                     <ul class="tw-border-t tw-border-l tw-border-r">
-                        <li v-for="(item, index) in menu" :key="index" class="tw-w-full tw-border-b tw-border-gray-400 tw-bg-sidebar-grad-end  hover:tw-bg-blue-400">
+                        <li v-for="(item, index) in menu" :key="index" class="tw-w-full tw-border-b tw-border-gray-400 tw-bg-sidebar-grad-end hover:tw-bg-blue-400">
                             <router-link  :to="item.link" class="tw-block tw-text-gray-800 tw-py-4">{{item.name}}</router-link>
                         </li>
                         <!-- <li class="tw-w-full tw-border-b tw-border-gray-400 tw-bg-sidebar-grad-end  hover:tw-bg-blue-400">
