@@ -19,7 +19,8 @@
             </div>
             </a>
         </div>
-        <a class="tw-mx-1 tw-text-header-color hover:tw-text-header-hover-color" href="/feedback">
+        <!-- If we want to add help/feedback to header menu -->
+        <!-- <a class="tw-mx-1 tw-text-header-color hover:tw-text-header-hover-color" href="/feedback">
           <div class="tw-flex tw-flex-row tw-items-center">
             <i class="fa fa-2x fa-comment"/>
             <p class="tw-text-xs tw-mx-1 tw-hidden md:tw-inline">Feedback</p>
@@ -35,7 +36,7 @@
               </div>
             </div>
           </div>
-        </a>
+        </a> -->
       </div>
     </div>
 </template>

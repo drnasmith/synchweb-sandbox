@@ -2,9 +2,9 @@
   <div class="tw-bg-content-background">
     <notification/>
     <header-menu v-bind:prop="proposal" v-bind:staff_menus="menus"/>
-    <navbar v-bind:prop="proposal" />
+    <!-- <navbar v-bind:prop="proposal" /> -->
     <div class="tw-w-10/12 tw-mx-auto"> <!-- Sets the main width of the content on screen -->
-      <!-- <sidebar /> -->
+      <sidebar :menu="proposal_menu"/>
       <motd :message="motd"/>
       <div class="tw-w-full tw-mx-2">
           <router-view></router-view>
@@ -42,6 +42,12 @@ export default {
           {icon: 'fa-cogs', link: '/settings', description: 'Overview'},
           {icon: 'fa-pie-chart', link: '/stats', description: 'Stats'},
           {icon: 'fa-truck', link: '/dewars', description: 'Logistics'},
+        ],
+        proposal_menu: [
+          {link: '/shipments', name: 'Shipment'},
+          {link: '/contacts', name: 'Contacts'},
+          {link: '/proteins', name: 'Proteins'},
+          {link: '/dewars', name: 'Registered Dewars'},
         ],
         motd: 'This is the message of the day'
       }
