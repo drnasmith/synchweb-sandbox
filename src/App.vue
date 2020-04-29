@@ -3,10 +3,11 @@
     <notification/>
     <header-menu v-bind:prop="proposal" v-bind:staff_menus="menus"/>
     <!-- <navbar v-bind:prop="proposal" /> -->
-    <div class="tw-mx-auto"> <!-- Sets the main width of the content on screen -->
-      <sidebar :menu="proposal_menu"/>
+    <div class="tw-mx-auto"> <!-- Popout menu for mobile screens -->
+        <sidebar :menu="proposal_menu"/>
     </div>
     <div class="tw-w-10/12 tw-mx-auto"> <!-- Sets the main width of the content on screen -->
+        <navbar :menu="proposal_menu"/>
         <motd :message="motd"/>
       <div class="tw-w-full tw-mx-2">
           <router-view></router-view>
@@ -21,8 +22,7 @@
 import Backbone from 'backbone'
 import Header from 'components/header.vue'
 import Footer from 'components/footer.vue'
-// import Sidebar from 'components/sidebar.vue'
-import Sidebar from 'components/sidebarmobile.vue'
+import Sidebar from 'components/sidebar.vue'
 import Navbar from 'components/navbar.vue'
 import Motd from 'components/utils/motd.vue'
 import Notification from 'components/utils/notification.vue'
@@ -32,9 +32,9 @@ export default {
     components: {
         'header-menu': Header,
         'footer-panel': Footer,
+        'navbar': Navbar,
         'sidebar': Sidebar,
         'motd': Motd,
-        'navbar': Navbar,
         'notification': Notification,
     },
     data: function() {

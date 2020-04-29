@@ -28,7 +28,7 @@
                             <a v-bind:href="visit.VISIT" class="tw-text-sm tw-tracking-wide tw-leading-loose tw-underline">{{visit.VISIT}}</a>
                             <p class="tw-text-xs">Start: {{visit.ST}}</p>
                             <p class="tw-text-xs">End: {{visit.EN}}</p>
-                            <p class="tw-text-xs">LC: {{visit.LC.substring(0,20)}}...</p>    
+                            <p class="tw-text-xs">LC: {{visit.LC | truncate}}...</p>    
                             <p class="tw-text-xs">SessionType: {{visit.SESSIONTYPE ? visit.SESSIONTYPE : 'Not set'}}</p>    
                         </div>
                     </div>
@@ -219,7 +219,7 @@ export default {
             "EN": "09:00 31-07-2019",
             "STISO": "2019-07-30T17:00:00",
             "ENISO": "2019-07-31T09:00:00",
-            "SESSIONID": "27414599",
+            "SESSIONID": "27414600",
             "VIS": "90",
             "BL": "i03",
             "LC": "Mr Mark Williams",
@@ -257,6 +257,15 @@ export default {
               console.log("Error getting visits" + err)
             }
         })
-    }
+    },
+    filters: {
+        truncate: function (value) {
+            if (!value) {
+                return ''
+            } else {
+                return value.substring(0,20)
+            }
+        }
+    },
 }
 </script>
