@@ -20,11 +20,16 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 
+// import Marionette from 'backbone.marionette'
+// import Options from 'models/options'
+import { initializeMarionette } from './app.js'
+
 Vue.config.productionTip = false
 
 Vue.prototype.$http = axios
 
 Vue.use(Vuelidate)
+
 
 new Vue({
   router,
@@ -34,6 +39,12 @@ new Vue({
     console.log("VM INSTANCE CREATED")
     this.initializeSync()
     this.initializeAjax()
+
+    // Initialise the Marionette parts of the app.
+    // Also exports window.app to this application
+    let application = initializeMarionette()
+
+    application.start()
   },
   methods: {
     initializeSync: function() {
@@ -52,9 +63,12 @@ new Vue({
       }
     },
     initializeAjax: function() {
+      console.log("VM initializeAjax")
       let self = this
-  // Pass prop to Backbone.ajax
+
+      // Pass prop to Backbone.ajax
       var oldAjax = Backbone.ajax
+
       Backbone.ajax = function(options) {
           var prop = self.$store.getters.currentProposal
           var token = self.$store.getters.token
@@ -82,7 +96,6 @@ new Vue({
 
           // Send token with requst
           if (token) {
-              console.log("AJAX Setting Authorization header")
               options.beforeSend = function(request){
                   request.setRequestHeader('Authorization', 'Bearer ' + token);
               }
@@ -90,6 +103,6 @@ new Vue({
 
           return oldAjax.call(this, options)
       }
-    }
+    },
   }
 }).$mount('#app')

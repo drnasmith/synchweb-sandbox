@@ -2,17 +2,22 @@
   <div class="tw-bg-content-background">
     <notification/>
     <header-menu v-bind:prop="proposal" v-bind:staff_menus="menus"/>
-    <!-- <navbar v-bind:prop="proposal" /> -->
+
     <div class="tw-mx-auto"> <!-- Popout menu for mobile screens -->
         <sidebar :menu="proposal_menu"/>
     </div>
+
     <div class="tw-w-10/12 tw-mx-auto"> <!-- Sets the main width of the content on screen -->
         <navbar :menu="proposal_menu"/>
         <motd :message="motd"/>
-      <div class="tw-w-full tw-mx-2">
+
+        <div class="tw-w-full tw-mx-2">
           <router-view></router-view>
-      </div>
+        </div>
+
+        <div id="marionette-container"></div>
     </div>
+
     <footer-panel />
   </div>
 </template>

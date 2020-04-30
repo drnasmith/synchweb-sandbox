@@ -54,7 +54,7 @@ module.exports = (env, argv)  => {
     alias: {
       // Vue packages from npm (vee-validate requires promise polyfill - also npm)
       vue: 'vue/dist/vue',
-      'underscore': 'lodash'  
+      'underscore': 'lodash',
     },
     modules: [
       path.resolve(__dirname, 'src/js'),
@@ -132,6 +132,7 @@ module.exports = (env, argv)  => {
   plugins: [
     new webpack.ProvidePlugin({
        _: "underscore",
+       $: "jquery"
    }),
 
     new HtmlWebpackPlugin({

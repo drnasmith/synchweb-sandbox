@@ -9,6 +9,9 @@ import Proteins from 'views/proteins.vue'
 import Dewars from 'views/registeredDewars.vue'
 import Feedback from 'views/feedback/feedback.vue'
 
+import TestView from 'modules/test/marionette_view.js'
+import MarionetteView from 'views/marionette/backbone-wrapper.vue'
+
 import ShipmentRoutes from 'views/shipment/routes.js'
 import ContactRoutes from 'views/contacts/routes.js'
 
@@ -53,6 +56,12 @@ let routes = [
     name: 'feedback',
     component: Feedback,
   },
+  {
+    path: '/marionette',
+    name: 'marionette',
+    component: MarionetteView,
+    props: { mview: TestView }
+  },
 ]
 
 routes.push(ShipmentRoutes)
@@ -63,16 +72,16 @@ let router = new Router({
   routes: routes
 })
 
-// router.beforeEach((to, from, next) => {
-//   if(to.matched.some(record => record.meta.requiresAuth)) {
-//     if (store.getters.isLoggedIn) {
-//       next()
-//       return
-//     }
-//     next('/login') 
-//   } else {
-//     next() 
-//   }
-// })
+router.beforeEach((to, from, next) => {
+  if(to.matched.some(record => record.meta.requiresAuth)) {
+    if (store.getters.isLoggedIn) {
+      next()
+      return
+    }
+    next('/login') 
+  } else {
+    next() 
+  }
+})
 
 export default router
