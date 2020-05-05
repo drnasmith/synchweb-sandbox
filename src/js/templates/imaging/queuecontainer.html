@@ -1,0 +1,60 @@
+<h1>Prepare Container for Data Collection</h1>
+
+<p class="help">This pages allows you to queue samples in a container for data collection</p>
+
+<% if (CONTAINERQUEUEID) { %>
+<p class="message alert">
+    <% if (['disposed', 'in_storage', null].indexOf(CONTAINERSTATUS) > -1) { %>
+        This container is queued for data collection, you can not modify it without unqueuing it
+        <a href="#" class="button unqueue"><i class="fa fa-times"></i> Unqueue</a>
+    <% } else { %>
+        This container is en route for data collection, it cannot be unqueued.
+    <% } %>
+</p>
+<% } %>
+
+<div class="clearfix xtalpreview">
+    <div class="image right"></div>
+    <div class="left">
+        <div class="form">
+            <ul>
+                <li>
+                    <span class="label">Container</span>
+                    <span class="NAME"><%-NAME%></span>
+                </li>
+
+                <li>
+                    <span class="label">Type</span>
+                    <span class="CONTAINERTYPE"><%-CONTAINERTYPE%></span>
+                </li>
+            </ul>
+        </div>
+
+        <h2>Available Samples</h2>
+        <div class="filter">
+            <span class="r">
+                <a href="#" class="button addall"><i class="fa fa-plus"></i> <span>Add Current Page to Queue</span></a>
+            </span>
+            <ul>
+                <li><label><input type="checkbox" name="nodata" /> Without Data</label></li>
+                <li><label><input type="checkbox" name="notcompleted" /> Not Completed</label></li>
+            </ul>
+        </div>
+        <div class="asamples"></div>
+    </div>
+</div>
+
+<h2>Queued Samples</h2>
+<div class="r rpreset">
+Presets: <select name="preset"></select> <a href="#" class="button apply" title="Apply this preset to the selected samples"><i class="fa fa-file-o"></i> Apply</a>
+</div>
+<div class="filter filter-nohide qfilt"></div>
+<div class="qsamples"></div>
+
+<% if (!CONTAINERQUEUEID) { %>
+<h2>Queue Plate</h2>
+<p>Queuing the container will make the queued items immutable, please make sure you have added all sub samples, and that they have valid experimental plans</p>
+<div class="form">
+    <button name="submit" value="1" type="submit" class="button submit">Queue Container</button>
+</div>
+<% } %>

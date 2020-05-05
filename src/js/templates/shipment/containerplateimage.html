@@ -1,0 +1,160 @@
+<h1 class="no_mobile">Container: <span class="NAME"><%-NAME%></span></h1>
+
+<a name="top"></a>
+<p class="help">This page shows the contents of the selected container. Samples can be added and edited by clicking the pencil icon, and removed by clicking the x</p>
+
+<% if (CONTAINERSTATUS == 'processing') { %>
+<p class="message alert">This container is currently assigned and in use on a beamline sample changer. Unassign it to make it editable</p>
+<% } %>
+
+<div class="inspect clearfix">
+    <div class="img right"></div>
+    <div class="left">
+        <div class="plate"></div>
+        <div class="ra">
+            <span class="label">Show Data Status</span> <input type="checkbox" name="sample_status" />
+            <label>
+                Rank By
+                <input type="checkbox" name="rank" />
+            </label>:
+            <select name="param">
+                <option value="DCRESOLUTION" data-inverted="1" data-check="DC">AP Resolution</option>
+                <option value="DCCOMPLETENESS" data-check="DC" data-min="0.85">AP Completeness</option>
+            </select>
+
+            <div class="sta small"></div> 
+        </div>
+        <div class="form">
+            <ul>
+                <li class="nowrap">
+                    <span class="label">Inspections</span>
+                    <select name="inspection"></select>
+                    <a href="#" class="button button-notext add_inspection"><i class="fa fa-plus"></i> <span>Add</span></a>
+                </li>
+                <li>
+                    <span class="label">Movie</span>
+                    Gap: <input type="number" step="0.1" name="gap" value="0.5" />s
+                    <a href="#" class="button play_inspection"><i class="fa fa-play"></i> <span>Play</span></a> 
+                </li>
+            </ul>
+        </div>
+
+        <div>
+            
+        </div>
+
+        <div class="add_image">
+            <h2>Upload Image</h2>
+            <div class="dropimage">
+                <i class="fa fa-2x fa-cloud-upload"></i> Drop Image Here
+                <div class="progress"></div>
+            </div>
+        </div>
+
+        <div class="singlesamp"></div>
+        <div class="startend"></div>
+        <div class="group"></div>
+
+        <div>
+            <h2>Marked Sub Samples</h2>
+            <div class="ra">
+                <a href="#" class="button add_point"><i class="fa fa-plus"></i> <span>Mark Point</span></a>
+                <a href="#" class="button add_region"><i class="fa fa-plus"></i> <span>Mark Region</span></a>
+            </div>
+            <div class="subs"></div>
+        </div>
+    </div>
+</div>
+
+<h1 class="no_mobile">Plate Details</h1>
+<div class="form clearfix">
+    <ul>
+        <li>
+            <span class="label">Shipment</span>
+            <span><a href="/shipments/sid/<%-SHIPPINGID%>"><%-SHIPMENT%></a></span>
+        </li>
+        
+        <li>
+            <span class="label">Dewar</span>
+            <span><%-DEWAR%></span>
+        </li>
+        <li>
+            <span class="label">Container Type</span>
+            <span class="CONTAINERTYPE"><%-CONTAINERTYPE%></span>
+        </li>
+
+        <li>
+            <span class="label">Barcode</span>
+            <span class="BARCODE"><%-BARCODE%></span>
+        </li>
+
+        <li class="clearfix reorder">
+            <div class="COMMENTS text"><%-COMMENTS%></div>
+            <span class="label">Comments</span>
+        </li>
+
+        <% if (REQUESTEDIMAGERID) { %>
+            <li>
+                <span class="label">Requested Imager Location</span>
+                <span class="IMAGERID"><%-REQUESTEDIMAGER%></span>
+            </li>
+        <% } %>
+
+        <% if (IMAGERID) { %>
+        <li>
+            <span class="label">Current Imager Location</span>
+            <span class="IMAGERID"><%-IMAGER%></span>
+        </li>
+        <% } %>
+
+        <% if (SCHEDULEID) { %>
+        <li>
+            <span class="label">Imaging Schedule</span>
+            <span><span class="SCHEDULEID"><%-SCHEDULE%></span> <a href="#" class="button view_sched"><i class="fa fa-search"></i> <span>View</span></a></span>
+        </li>
+        <% } %>
+
+        <% if (SCREENID) { %>
+        <li>
+            <span class="label">Crystallisation Screen</span>
+            <span><span class="SCREENID"><%-SCREEN%></span> <a href="/imaging/screen/<%-SCREENID%>" class="button view_scr"><i class="fa fa-search"></i> <span>View</span></a></span>
+        </li>
+        <% } %>
+        
+        <% if (INSPECTIONS > 0) { %>
+        <li>
+            <span class="label">Last Inspection</span>
+            <span><%-LASTINSPECTION%> (<%-INSPECTIONS%> inspections)</span>
+        </li>
+        <% } %>
+
+        <% if (VISIT) { %>
+        <li>
+            <span class="label">Data Collections</span>
+            <span><a href="/dc/visit/<%-VISIT%>" class="button"><i class="fa fa-search"></i> <span>View</span></a></span>
+        </li>
+        <% } %>
+
+        <% if (IMAGERID) { %>
+        <li class="clearfix reorder">
+            
+            <div class="text_table">
+                <div class="queue"></div>
+                
+                <div>
+                    <select name="INSPECTIONTYPEID"></select> 
+                    <span class="adhoc"></span>    
+                </div> 
+                <div class="return"></div>
+            </div>
+            <span class="label">Actions</span>
+        </li>
+        <% } %>
+
+        <li class="clearfix reorder">
+            <div class="history text_table"></div>
+            <span class="label">Location History</span>
+        </li>
+
+    </ul>
+</div>

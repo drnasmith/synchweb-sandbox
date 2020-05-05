@@ -1,0 +1,38 @@
+<td><%-LOCATION%></td>
+<td class="protein"><select name="PROTEINID"></select>
+
+<td class="name"><input type="text" name="NAME" value="<%-NAME%>" /></td>
+<td class="spacegroup xtal auto-extra"><select name="SPACEGROUP"></select></td>
+<td class="barcode xtal auto-extra"><input name="CODE" type="text" value="<%-CODE%>" /></td>
+<td class="volume non-xtal"><input type="text" name="VOLUME" value="<%-VOLUME%>" /></td>
+
+<td class="centringmethod auto"><select name="CENTRINGMETHOD"></select></td>
+<td class="experimentkind auto"><select name="EXPERIMENTKIND"></select></td>
+<td class="energy auto"><input type="text" name="ENERGY" /></td>
+<td class="radiationsensitivity auto"><select name="RADIATIONSENSITIVITY"></select></td>
+
+<td class="comments"><input type="text" name="COMMENTS" value="<%-COMMENTS%>" /></td>
+
+<td class="anomalousscatterer"><select class="xtal" name="ANOMALOUSSCATTERER"></select></td>
+
+<td class="requiredresolution xtal"><input type="text" name="REQUIREDRESOLUTION" /></td>
+
+<td class="abundance extra"><input type="text" name="ABUNDANCE" value="<%-ABUNDANCE%>" /> <span class="SYMBOL"><%-SYMBOL%></span></td>
+<td class="extra components">
+	Add: <input type="text" name="COMPONENTID">
+</td>
+
+<td class="unitcell extra">
+	<input type="text" name="CELL_A" placeholder="A" />
+	<input type="text" name="CELL_B" placeholder="B" />
+	<input type="text" name="CELL_C" placeholder="C" />
+	<input type="text" name="CELL_ALPHA" placeholder="&alpha;" />
+	<input type="text" name="CELL_BETA" placeholder="&beta;" />
+	<input type="text" name="CELL_GAMMA" placeholder="&gamma;" />
+</td>
+
+<td>&nbsp;</td>
+<td>
+    <a href="#" class="button button-notext save"><i class="fa fa-check"></i> <span>Save Changes</span></a>
+    <a href="#" class="button button-notext cancel"><i class="fa fa-times"></i> <span>Cancel</span></a>
+</td>

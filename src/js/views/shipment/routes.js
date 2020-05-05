@@ -5,13 +5,14 @@ import ListShipments from 'views/shipment/shipmentList.vue'
 import ViewShipment from 'views/shipment/shipmentView.vue'
 
 export default 
-{
+[
+  {
     path: '/shipments',
-    name: 'shipments',
     component: Page,
     children: [
       {
         path: '',
+        name: 'shipments',
         name: 'listShipments',
         component: ListShipments
       },
@@ -26,4 +27,5 @@ export default
         component: ViewShipment,
       }
     ]
-}
+  }
+]

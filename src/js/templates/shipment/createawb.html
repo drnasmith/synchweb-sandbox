@@ -1,0 +1,135 @@
+<h1>Create Airway Bill: <% if (RETURN) { %>From Facility<% } else { %>To Facility<% } %></h1>
+
+<h2>Shipment Details</h2>
+<div class="form">
+    <ul>
+        <li>
+            <span class="label">Shipment</span>
+            <span class="SHIPPINGNAME"><%-SHIPPINGNAME%></span>
+        </li>
+
+        <li class="clearfix">
+            <span class="label">Dewars</span>
+            <span class="DEWARS floated"></span>
+        </li>
+
+        <li>
+            <span class="label">Weight</span>
+            <span class="WEIGHT"></span> Kg
+        </li>
+
+        <li>
+            <span class="label">DHL Account Number</span>
+            <span class="DELIVERYAGENT_AGENTCODE"><%-DELIVERYAGENT_AGENTCODE%></span> <a href="#" class="facc button"><i class="fa fa-envelope"></i> Use Facility Account</a> <span class="acc_msg"></span>
+        </li>
+
+        <li>
+            <span class="label">Declared Value</span>
+            <input type="text" name="DECLAREDVALUE" value="100" /> GBP
+        </li>
+
+        <li>
+            <span class="label">Package Description</span>
+            <input type="text" name="DESCRIPTION" class="full" />
+        </li>        
+    </ul>
+</div>
+
+<h2>Contact Details</h2>
+<div class="form">
+    <ul>
+        <li>
+            <span class="label">Contact</span>
+            <span class="GIVENNAME"></span> <span class="FAMILYNAME"></span>
+        </li>
+        
+        <li>
+            <span class="label">Contact Phone Number</span>
+            <span class="PHONENUMBER"></span>
+        </li>
+        
+        <li>
+            <span class="label">Contact Email</span>
+            <span class="EMAILADDRESS"></span>
+        </li>
+    </ul>
+</div>
+        
+<h2>Laboratory Details</h2>
+<div class="form">
+    <ul>
+        <li>
+            <span class="label">Laboratory Name</span>
+            <span class="LABNAME"></span>
+        </li>
+        
+        <li class="clearfix reorder">
+            <div class="ADDRESS text"></div>
+            <span class="label">Laboratory Address <br /><span class="small">(excluding post code)</span></span>
+        </li>
+        
+        <li>
+            <span class="label">Laboratory City</span>
+            <span class="CITY"></span>
+        </li>
+
+        <li>
+            <span class="label">Laboratory Postcode</span>
+            <span class="POSTCODE"></span>
+        </li>
+
+        <li>
+            <span class="label">Laboratory Country</span>
+            <span class="COUNTRY"></span> <span class="free"></span>
+        </li>
+    </ul>
+</div>
+        
+<h2>Pickup Details</h2>
+<div class="form">
+    <ul>
+        <li>
+            <span class="label">Package Location <br /> 
+                <span class="small">Location where shipment can be picked up from</span>
+            </span>
+            <span class="PHYSICALLOCATION"><%-PHYSICALLOCATION%></span>
+        </li>
+
+        <li>
+            <span class="label">Shipping Date</span>
+            <span class="DELIVERYAGENT_SHIPPINGDATE"><%-DELIVERYAGENT_SHIPPINGDATE%></span>
+        </li>
+
+        <li>
+            <span class="label">Ready By <br /> 
+                <span class="small">Time shipment will be ready for pickup</span>
+            </span>
+            <span class="READYBYTIME"><%-READYBYTIME%></span>
+        </li>
+
+        <li>
+            <span class="label">Close Time <br /> 
+                <span class="small">Time after which shipment cannot be picked up</span>
+            </span>
+            <span class="CLOSETIME"><%-CLOSETIME%></span>
+        </li>
+    </ul>
+</div>
+
+<div class="qwrap">
+    <h2>Quotes</h2>
+    <div class="quotes"></div>
+</div>
+
+<div>
+    <h2>Terms &amp; Conditions</h2>
+    <p class="terms justify">
+    I understand that use of DHL’s services is entirely at my own risk and that Diamond makes no representations or warranties of any kind (express or implied) about the reliability or availability of the DHL service. Any reliance that I place on the DHL service is strictly at my own risk. It is my responsibility to ensure that samples arrive at Diamond in advance of any beamtime that Diamond may have awarded me and I hereby indemnify and hold Diamond harmless for any loss or damage arising out of my use of DHL’s services.</p>
+
+    <p class="terms-quote justify">I understand that use of DHL's services is entirely at my own risk and that Diamond makes no representations or warranties of any kind (express or implied)about the reliability or availability of the DHL service. Any reliance that I place on the DHL service is strictly at my own risk. It is my responsibility to ensure that I am authorised to use the DHL account that I provide to Diamond and to ensure that the samples arrive at Diamond in advance of any beamtime that Diamond may have awarded me. I hereby indemnify and hold Diamond harmless for any loss or damage arising out of my use of DHL’s services.</p>
+</div>
+
+<div class="form">
+    <button name="quote" value="1" type="submit" class="button submit">Get Quote</button>
+    <button name="submit" value="1" type="submit" class="button submit">Create Airway Bill</button>
+</div>

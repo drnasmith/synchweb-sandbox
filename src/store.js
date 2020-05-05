@@ -1,20 +1,24 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-import axios from 'axios'
+import MarionetteApp from 'views/marionette/app.js'
+import Backbone from 'backbone'
 
 Vue.use(Vuex)
 
 var API_ROOT = '/api'
 
 // Keep a global app object for compatibility
-var app = app || {}
+window.app = MarionetteApp()
 
 export default new Vuex.Store({
-  timeoutId: null,
   state: {
+    // Flag we use to check if we have already setup prop/token
+    initialised: false,
+    // Global api prefix
     apiRoot: API_ROOT,
     user: '',
+    staff: false,
     token: '',
     proposal: '',
     visit: '',
@@ -25,16 +29,16 @@ export default new Vuex.Store({
   },
   mutations: {
       save_proposal(state, prop) {
-        console.log("Saved proposal " + prop)
         state.proposal = prop
-        app.prop = prop
-
         sessionStorage.setItem('prop', prop)
+        // Legacy app
+        app.prop = state.proposal
       },
       clear_proposal(state) {
         state.proposal = ''
-        app.prop = ''
         sessionStorage.removeItem('prop')
+        // Legacy app
+        app.prop = state.proposal
       },
       save_visit(state, visit) {
         state.visit = visit
@@ -59,9 +63,12 @@ export default new Vuex.Store({
         state.token = token
         state.user = user
         sessionStorage.setItem('token', token)
+        // Preserve legacy app
+        app.token = state.token
       },
       auth_error(state){
         state.status = 'error'
+        state.token = ''
         sessionStorage.removeItem('token')
       },
       logout(state){
@@ -70,25 +77,70 @@ export default new Vuex.Store({
         state.proposal = ''
         sessionStorage.removeItem('token')
         sessionStorage.removeItem('prop')
+        // Preserve legacy app
+        app.token = state.token
+        app.prop = state.prop
       },      
   },
   actions: {
-    login({commit}, credentials){
-        return new Promise((resolve, reject) => {
-          commit('auth_request')
-          axios({url: API_ROOT + '/authenticate', data: credentials, method: 'POST' })
-          .then(resp => {
+    initialise({commit}) {
+      if (!this.state.initialised) {
+        window.app.apiurl = this.state.apiRoot
+        
+        // Get any stored value from sessionStorage
+        var prop = sessionStorage.getItem('prop')
+        var token = sessionStorage.getItem('token')
+  
+        console.log("INITIALISE STORE, prop = " + prop)
+
+        commit('save_proposal', prop)
+        commit('auth_success', token)
+
+        this.state.initialised = true
+      }
+    },
+    log({commit}, url) {
+      console.log("Store tracking url: " + url)
+    },
+    getUser({commit}, credentials) {
+      return new Promise((resolve, reject) => {
+        commit('auth_request')
+
+        Backbone.ajax({
+          url: this.state.apiRoot+'/users/current',
+          success: function(resp) {
             const token = resp.data.jwt
             const user = credentials.login // Using passed fed id at the moment
             commit('auth_success', token, user)
             resolve(resp)
-          })
-          .catch(err => {
+          },
+          error: function(req, status, error) {
             commit('auth_error')
-            reject(err)
-          })
+            reject(req)
+          }})
         })
     },
+    login({commit}, credentials) {
+      return new Promise((resolve, reject) => {
+        commit('auth_request')
+
+        Backbone.ajax({
+          url: this.state.apiRoot+'/authenticate',
+          data: credentials,
+          type: 'POST',
+          success: function(resp) {
+            const token = resp.jwt
+            const user = credentials.login // Using passed fed id at the moment
+            commit('auth_success', token, user)
+            resolve(resp)
+          },
+          error: function(req, status, error) {
+            commit('auth_error')
+            reject(req)
+          }})
+        })
+    },
+
     logout({commit}){
         return new Promise((resolve, reject) => {
           commit('logout')
@@ -98,7 +150,7 @@ export default new Vuex.Store({
   },
   getters: {
     isLoggedIn: state => !!state.token,
-    isStaff: state => true,
+    isStaff: state => state.staff,
     token: function(state) {
       if (!state.token) {
         // Any in storage?
@@ -114,6 +166,9 @@ export default new Vuex.Store({
         let prop = sessionStorage.getItem('prop')
         if (prop) {
           state.proposal = prop
+          app.prop = state.proposal
+        } else {
+          state.proposal = ''
         }
       }
       return state.proposal

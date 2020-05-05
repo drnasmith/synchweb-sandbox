@@ -5,27 +5,29 @@ import LabContact from 'views/contacts/labcontact.vue'
 import AddContact from 'views/contacts/addContact.vue'
 
 export default 
-{
-    path: '/contacts',
-    name: 'contacts',
-    component: Page,
-    children: [
-        {
-            path: '',
-            name: 'listContacts',
-            component: LabContacts,
-        },
-        {
-            path: 'add',
-            name: 'addContact',
-            component: AddContact,
-        },
-        // Adding /id makes route determination clearer - does not get confused with 'add' as :id
-        {
-            path: 'id/:id',
-            name: 'contact',
-            component: LabContact,
-            props: true
-        },
-    ]
-}
+[
+    {
+        path: '/vcontacts',
+        component: Page,
+        children: [
+            {
+                path: '',
+                name: 'vcontacts',
+                name: 'listContacts',
+                component: LabContacts,
+            },
+            {
+                path: 'add',
+                name: 'addContact',
+                component: AddContact,
+            },
+            // Adding /id makes route determination clearer - does not get confused with 'add' as :id
+            {
+                path: 'id/:id',
+                name: 'contact',
+                component: LabContact,
+                props: true
+            },
+        ]
+    }
+]

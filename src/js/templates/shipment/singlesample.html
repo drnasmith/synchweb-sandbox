@@ -1,0 +1,102 @@
+
+    <h2>Sample</h2>
+
+    <% if (!existingContainer) { %>
+    <div class="ra">
+        <a href="#" class="button clone-plate"><i class="fa fa-plus"></i> Plate</a>
+        <a href="#" class="button clone-col"><i class="fa fa-plus"></i> Column</a>
+        <a href="#" class="button clone-row"><i class="fa fa-plus"></i> Row</a>
+
+        <a href="#" class="button clear-plate" title="Clear Plate"><i class="fa fa-times"></i> Plate</a>
+        <a href="#" class="button clear-col" title="Clear Column"><i class="fa fa-times"></i> Column</a>
+        <a href="#" class="button clear-row" title="Clear Row"><i class="fa fa-times"></i> Row</a>
+        
+        <a href="#" class="button clear" title="Clear Sample"><i class="fa fa-times"></i></a>
+    </div>
+    <% } %>
+
+    <form>
+
+    <a class="button extrainfo r" href="#" title="Show extra fields"><i class="fa fa-plus"></i> Extra Fields</a>
+    <div class="form">
+        <ul>
+            <li>
+                <label>Protein</label>
+                <select name="PROTEINID"></select>
+            </li>
+            <li>
+                <label>Abundance</label>
+                <input name="ABUNDANCE" /> <span class="SYMBOL"></span>
+            </li>
+            <li>
+                <label>Sample Name</label>
+                <input type="text" name="NAME" />
+            </li>
+            <li>
+                <label>Spacegroup</label>
+                <select name="SPACEGROUP"></select>
+            </li>
+            <li>
+                <label>Comments</label>
+                <input type="text" name="COMMENTS" />
+            </li>
+
+            <li class="extra">
+                <label>Required Res</label>
+                <input type="text" name="REQUIREDRESOLUTION" />
+            </li>
+            <li class="extra">
+                <label>Anom Scatterer</label>
+                <select name="ANOMALOUSSCATTERER"></select>
+            </li>
+            <li class="extra clearifx reorder">
+                <div class="text_table table">
+                    <table class="reflow cell">      
+                        <thead>            
+                            <tr>
+                                <th>A</th>
+                                <th>B</th>
+                                <th>C</th>
+                                <th>&alpha;</th>
+                                <th>&beta;</th>
+                                <th>&gamma;</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>                                
+                                <td><input type="text" name="CELL_A" /></td>
+                                <td><input type="text" name="CELL_B" /></td>
+                                <td><input type="text" name="CELL_C" /></td>
+                                <td><input type="text" name="CELL_ALPHA" /></td>
+                                <td><input type="text" name="CELL_BETA" /></td>
+                                <td><input type="text" name="CELL_GAMMA" /></td>
+                            </tr> 
+                        </tbody>    
+                    </table>
+                </div>
+                <label>Unit Cell</label>
+            </li>
+        </ul>
+    </div>
+
+    </form>
+
+    <div class="form">
+        <ul>
+            <li class="clearfix">
+                <label>Components
+                    <span class="small">Add: <input type="text" name="COMPONENTID"></span>
+                </label>
+                <span class="components floated">
+                    
+                </span>
+            </li>
+        </ul>
+    </div>
+
+    <% if (existingContainer) { %>
+    <div class="form">
+        <button name="submit" value="1" type="submit" class="button submit"><i class="fa fa-plus"></i> Add Sample</button>
+    </div>
+    <% } %>
+

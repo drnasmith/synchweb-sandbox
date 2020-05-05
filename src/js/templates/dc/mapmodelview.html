@@ -1,0 +1,16 @@
+<div class="image_container border" id="map_model">
+    <div class="image">
+        <div class="controls">
+            <select name="residue"></select> 
+            <div class="table peaks"></div>
+        </div>
+        
+        <div id="viewer" style="background: #000"></div>
+        <div id="hud" onmousedown="event.stopPropagation();"
+                   ondblclick="event.stopPropagation();"
+             >This is uglymol not coot. <a href="#"
+                         onclick="V.toggle_help(); return false;"
+                         >H shows help.</a></div>
+        <div id="help"></div>
+    </div>
+</div>

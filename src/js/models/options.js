@@ -1,5 +1,8 @@
-import Backbone from 'backbone'
+define(['backbone'], function(Backbone) {
     
-export default Backbone.Model.extend({
-    urlRoot: '/options'
+  	return Backbone.Model.extend({
+    	urlRoot: '/options'
+    })
+
 })
+    

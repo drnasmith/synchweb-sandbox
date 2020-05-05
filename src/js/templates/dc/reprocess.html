@@ -1,0 +1,38 @@
+	<p class="help">
+		Select data sets to reintegrate by selecting a number of images in the DISTL plot. Provide unit cell parameters, space group, and high resolution cut off as needed.
+	</p>
+
+    <div class="ra">
+        <a href="/mc/visit/<%-VISIT%>" class="button" title="Multicrystal Integrator"><i class="fa fa-diamond"></i> <span>Multi Crystal</span></a>
+    </div>
+	<div class="data_collection">
+        <label><input type="checkbox" name="individual" /> Process Individually</label>
+
+        <span class="multi form">
+            | 
+            Pipeline :<select name="method"></select>
+            High Res :<input type="text" name="res" /> &#197; |
+            <a href="#" class="button sgm">Space Group / Cell</a> 
+            <a href="#" class="button opt">Options</a>
+            <br />
+            <!-- Comments: <input type="text" name="comments" class="full" /> -->
+        </span>
+    </div>
+
+    <div class="cell data_collection">
+        <label>Spacegroup: <input type="text" name="sg" /></label> | 
+        <label>a <input type="text" name="a" /></label>
+        <label>b <input type="text" name="b" /></label>
+        <label>c <input type="text" name="c" /></label>
+        <label>&alpha; <input type="text" name="alpha" /></label>
+        <label>&beta; <input type="text" name="beta" /></label>
+        <label>&gamma; <input type="text" name="gamma" /></label>
+    </div>
+
+
+    <div class="options data_collection">
+        <label><input type="checkbox" name="sm" value="1" /> Small Molecule</label>
+    </div>
+
+
+    <div class="dcs"></div>

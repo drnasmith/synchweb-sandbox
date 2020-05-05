@@ -243,9 +243,10 @@ export default {
         let self = this
         // Get visits for this user
         let url = this.$store.getters.apiRoot + '/proposal/visits'
+        this.$store.commit('clear_proposal')
         Backbone.ajax({
             url: url,
-            data: {'per_page': 15, 'page': 1, 'prop': this.$store.getters.currentProposal},
+            data: {'per_page': 15, 'page': 1, 'all': 1},
             success: function(resp) {
                 console.log(JSON.stringify(resp.data))
                 self.total = resp.total

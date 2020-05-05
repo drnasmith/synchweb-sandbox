@@ -1,17 +1,24 @@
-import Backbone from 'backbone'
-import LabContact from '../models/labcontact.js'
+define(['backbone.paginator', 'models/labcontact', 'utils/kvcollection'], function(PageableCollection, LabContact ,KVCollection) {
        
-let LabContacts = Backbone.Collection.extend({
-    model: LabContact,
-    url: '/contact',
-    totalRecords: 0, 
-    parse: function(response) {
-        // Expected response {'total': 1, 'data':[{},{}]}
-        this.totalRecords = response.total ? response.total : -1
-        return response.data;
-    },                 
-    keyAttribute: 'CARDNAME',
-    valueAttribute: 'LABCONTACTID',
-})
+    return PageableCollection.extend(_.extend({}, KVCollection, {
+        model: LabContact,
+        mode: 'server',
+        url: '/contact',
+                                          
+        state: {
+            pageSize: 15,
+        },
+                                          
+        parseState: function(r, q, state, options) {
+          return { totalRecords: r.total }
+        },
+      
+        parseRecords: function(r, options) {
+            return r.data
+        },
+        
+        keyAttribute: 'CARDNAME',
+        valueAttribute: 'LABCONTACTID',
 
-export default LabContacts
+    }))
+})

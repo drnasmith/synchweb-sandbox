@@ -11,11 +11,10 @@
         <navbar :menu="proposal_menu"/>
         <motd :message="motd"/>
 
-        <div class="tw-w-full tw-mx-2">
-          <router-view></router-view>
+        <div id="content-wrapper" class="tw-w-full tw-mx-2">
+          <!-- Using the full route as key forces refresh when sharing the same component -->
+          <router-view :key="$route.fullPath"></router-view>
         </div>
-
-        <div id="marionette-container"></div>
     </div>
 
     <footer-panel />
@@ -53,7 +52,8 @@ export default {
         ],
         proposal_menu: [
           {link: '/shipments', name: 'Shipment'},
-          {link: '/contacts', name: 'Contacts'},
+          {link: '/vcontacts', name: 'Contacts'},
+          {link: '/contacts', name: 'Lab Contacts'},
           {link: '/proteins', name: 'Proteins'},
           {link: '/dewars', name: 'Registered Dewars'},
         ],
@@ -69,12 +69,6 @@ export default {
       },
     },
     created: function () {
-      // Do we have a local token?
-      let token = sessionStorage.getItem('token')
-      if (token) {
-        // Ensure we update our token and set the auth key
-        this.$store.commit('auth_success', token, '')
-      }
     },
     methods: {
     }

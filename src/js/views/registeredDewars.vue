@@ -27,7 +27,7 @@
         </table-component>
 
         <pagination-component 
-            initialPage="0" 
+            :initialPage="0" 
             :totalRecords="total"
             v-on:page-changed="onPageChange">
         </pagination-component>
@@ -51,6 +51,7 @@ export default {
     data: function() {
         return {
             dewars: [],
+            total: 0,
             searchTerm: '',
         }
     },

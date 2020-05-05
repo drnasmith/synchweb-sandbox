@@ -54,7 +54,60 @@ module.exports = (env, argv)  => {
     alias: {
       // Vue packages from npm (vee-validate requires promise polyfill - also npm)
       vue: 'vue/dist/vue',
-      'underscore': 'lodash',
+      'underscore': 'underscore',
+      'marionette': 'backbone.marionette',
+
+      'jquery.touchswipe': 'jquery-touchswipe',
+      'jquery-ui.timepicker': 'jquery-ui-timepicker-addon', // Need to update timepicker css to avoid showing microseconds/milliseconds      
+      // Jquery-ui-combox is based on an extension from npm
+      // The original was based on a collection of extensions: (https://github.com/bseth99/jquery-ui-extensions)
+      // Currently using a modified version from npm
+      'jquery-ui.combobox': 'vendor/jquery/jquery-ui.combobox.custom',
+      // 'jquery-ui.combobox': 'vendor/jquery/jquery-ui.combobox',
+
+      // Jquery.flot provided by NPM package (exact name match)
+      // Jquery.flot.resize also from NPM but slightly older version 1.0.0 2012 instead of 2013 (vendor lib)
+      'jquery.flot.resize': 'jquery-flot-resize', 
+      'jquery.flot.pie': 'flot-pie',
+      'jquery.flot.time': 'vendor/flot/jquery.flot.time.min',
+      'jquery.flot.selection': 'vendor/flot/jquery.flot.selection',
+      'jquery.flot.stack': 'vendor/flot/jquery.flot.stack',
+
+       // Jquery flot tooltip is provided ny NPM with exact name match,
+       // so not aliased here, was: 'vendor/flot/jquery.flot.tooltip',
+      'jquery.flot.tickrotor': 'vendor/flot/jquery.flot.tickrotor',
+      'jquery.flot.axislabels': 'flot-axislabels',
+      
+      // We can't currently use the magnific-popup from npm e.g.:
+      // 'jquery.mp': 'magnific-popup',
+      // The vendor library has been modified to append proposal to the request
+      // Hence the vendor magnific-popup has a dependency on our utils/xhrimage
+      'jquery.mp': 'vendor/jquery/jquery.magnific-popup',
+
+      // jeditable can be provided by NPM (but only for jQuery 3.x). Does not work with our legacy jquery.
+      // 'jquery.editable': 'jquery-jeditable/dist/jquery.jeditable.min',
+      // 'jquery.editable.datepicker': 'jquery-jeditable/dist/jquery.jeditable.datepicker.min',
+      'jquery.editable': 'vendor/jquery/jquery.jeditable.min',
+      'jquery.editable.datepicker': 'vendor/jquery/jquery.jeditable.datepicker',
+
+      // Jquery.color plugin also NPM package
+      // Only used from within utils.js
+      'jquery.color': 'jquery-color',
+      // Caman npm depends on fibers, canvas, fs which we don't want...
+      // So use direct downloaded dependency
+      caman: 'vendor/caman.min',
+
+      // heatmap in npm has dependency on canvas/node-gyp... so use old one for now
+      heatmap: 'vendor/hmap',
+      
+      // gunzip is actually the zlib library
+      // https://npm.taobao.org/package/zlibjs
+      gzip: 'zlibjs/bin/gunzip.min',
+
+      markdown: 'markdown/lib/markdown',
+
+      highmaps: 'highcharts/highmaps',
+      'highmaps-world': '@highcharts/map-collection/custom/world',
     },
     modules: [
       path.resolve(__dirname, 'src/js'),
@@ -64,6 +117,20 @@ module.exports = (env, argv)  => {
   },
   module: {
     rules: [
+      {
+        test: /\.html$/,
+        use: [
+          {
+            loader: 'underscore-template-loader',
+            options: {
+              engine: 'underscore',
+            }
+          }
+        ],
+        exclude: [
+          path.resolve(__dirname, 'src/js/templates/vue')
+        ]
+      },
       // Font loader - url should be relative to entry main.scss file
       {
         test: /\.(woff|woff2|eot|ttf|otf)$/,
@@ -132,7 +199,8 @@ module.exports = (env, argv)  => {
   plugins: [
     new webpack.ProvidePlugin({
        _: "underscore",
-       $: "jquery"
+       $: "jquery",
+       jQuery: "jquery",
    }),
 
     new HtmlWebpackPlugin({
