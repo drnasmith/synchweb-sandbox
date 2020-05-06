@@ -19,9 +19,6 @@ import {routes as LegacyRoutes} from 'modules/contact/vue-routes.js'
 
 Vue.use(Router)
 
-// First initailise the store - this checks any values saved in sessionStorage
-// store.dispatch("initialise")
-
 let routes = [
   {
     path: '/',
@@ -36,6 +33,7 @@ let routes = [
   {
     path: '/login',
     name: 'login',
+    props: true, // this will mean redirect query also passed to login as prop
     component: Login,
   },
   {
@@ -99,23 +97,49 @@ var parseQuery = function(path) {
   // sessionStorage.setItem('prop', pairs.prop)
 }
 
+// Everything is protected apart from / and /login
 router.beforeEach((to, from, next) => {
   console.log("router.beforeEach to: " + to.path + ", from: " + from.path)
+  console.log("router.beforeEach to.redirect: " + to.query.redirect)
 
   if (to.matched.length === 0) {
     console.log("Page Not Found")
     next('/nopage')
   }
+
+  // Check if we should extract proposal from url
   var prop = parseQuery(to.path)
+
+  if (prop) {
+    store.commit('save_proposal', prop)
+  }
 
   store.dispatch('log', to.path)
 
-  if ( ! store.state.token && to.path !== '/login') {
-    next('/login')
+  // Are we authenticated
+  if ( ! store.state.token ) {
+    // If we are on the main page or a login page that's ok 
+    if (to.path === '/' || to.path === '/login') {
+      console.log("router.beforeEach normal navigation to login")
+      next()
+    } else {
+      console.log('router.beforeEach redirecting to login to: ' + to.path + ', from: ' + from.path)
+      next({
+        path: '/login',
+        query: { redirect: to.fullPath }
+      })  
+      // next()
+    }
   } else {
+    console.log("router.beforeEach user already logged in")
     next()
   }
-
 })
 
+router.afterEach((to, from) => {
+  // If we have been redirected to the login page, go back to the referrer
+  if (to.path === '/login' && from.path !== '/') {
+    console.log("Router.afterEach login redirect...")
+  }
+})
 export default router

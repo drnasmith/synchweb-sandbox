@@ -105,12 +105,15 @@ export default {
             model.save({}, {
                 success: function(model, response, options) {
                     // Indicate success and reset form
-                    self.$store.commit('set_notification', {message: "Feedback successfully submitted", level: "info"})
+                    self.$store.commit('add_notification', {message: "Feedback successfully submitted", level: "info"})
+                    setTimeout(function() {
+                        self.$store.commit('add_notification', {message: "...or was it", level: "error"})
+                    }, 3000)
                     self.isLoading = false
                     self.resetForm()
                 },
                 error: function(model, response, options) {
-                    self.$store.commit('set_notification', {message: "Something went wrong submitting this feedback, please try again", level: 'error'})
+                    self.$store.commit('add_notification', {message: "Something went wrong submitting this feedback, please try again", level: 'error'})
                     // If feedback failed, don't reset the form, just set loading to false
                     self.isLoading = false
                 }

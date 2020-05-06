@@ -17,17 +17,27 @@ export default new Vuex.Store({
     initialised: false,
     // Global api prefix
     apiRoot: API_ROOT,
-    user: '',
-    staff: false,
+    user: {
+      username: '',
+      isStaff: false,
+      personId: 0,
+      defaultType: 'mx',
+      permissions: []
+    },
     token: '',
     proposal: '',
+    proposalType: '',
     visit: '',
+    notifications: [],
     notification: {
       level: '',
       message: ''
     }
   },
   mutations: {
+    //
+    // Proposal and visit information
+    //
       save_proposal(state, prop) {
         state.proposal = prop
         sessionStorage.setItem('prop', prop)
@@ -45,23 +55,50 @@ export default new Vuex.Store({
       },
       clear_visit(state) {
         state.visit = ''
-      },      
-      set_notification(state, payload) {
-        console.log("Setting notification " + payload.message)
+      },
+      //
+      // Notifications and alerts
+      //
+      add_notification(state, payload) {
+        console.log("Adding notification " + payload.message)
+        let notification = payload
+        notification.id = Date.now() // Using number of miliseconds since 1970 as uid
+
+        state.notifications.push(notification)
         state.notification.level = payload.level
         state.notification.message = payload.message
       },
-      clear_notification(state) {
-        console.log("Clearing notification")
-        state.notification = {level: '', message: ''}
-      },      
+      clear_notifications(state) {
+        console.log("Clearing notifications")
+        state.notifications = []
+      },
+      set_notification(state, payload) {
+          console.log("Setting notification " + payload.message)
+          state.notification.level = payload.level
+          state.notification.message = payload.message
+      },
+      clear_notification(state, id) {
+        console.log("Store Clearing notification for id " + id)
+        state.notifications = state.notifications.filter(notification => notification.id !== id)
+        // )
+        // state.notifications.forEach(element => {
+        //   console.log("Checking notifications array for " + element.id)
+        //   if (element.id === id) {
+        //     console.log("remove item....")
+        //   }
+        // });
+        // state.notification = {level: '', message: ''}
+      },
+      //
+      // Authorisation status
+      //
       auth_request(state){
         state.status = 'loading'
       },
-      auth_success(state, token, user){
+      auth_success(state, token, username){
         state.status = 'success'
         state.token = token
-        state.user = user
+        state.user.username = username // part of larger user object, we don't have all the info yet
         sessionStorage.setItem('token', token)
         // Preserve legacy app
         app.token = state.token
@@ -71,15 +108,38 @@ export default new Vuex.Store({
         state.token = ''
         sessionStorage.removeItem('token')
       },
+      update_user(state, user) {
+        // user should be an object with { username, personid, is_staff, givenname, defaultType}
+        // Explicit mapping here to catch any errors and avoid unnecessary values
+        state.user.username = user.user
+        state.user.personId = user.personid
+        state.user.isStaff = user.is_staff
+        state.user.defaultType = user.ty // default type of layout to show for this user mx, em etc.
+        state.user.givenName = user.givenname
+
+        // Now map this to our legacy marionette application
+        app.user = user.user
+        app.personid = user.personid
+        app.givenname = user.givenname
+        app.staff = user.is_staff
+        // Saving the default type for this user.
+        // Needed for resetting the home view
+        app.defaultType = user.ty
+
+        if (!app.type) {
+          app.type = user.ty
+        }
+      },
       logout(state){
         state.status = ''
         state.token = ''
         state.proposal = ''
+        state.user = {}
         sessionStorage.removeItem('token')
         sessionStorage.removeItem('prop')
         // Preserve legacy app
         app.token = state.token
-        app.prop = state.prop
+        app.prop = state.proposal
       },      
   },
   actions: {
@@ -91,34 +151,19 @@ export default new Vuex.Store({
         var prop = sessionStorage.getItem('prop')
         var token = sessionStorage.getItem('token')
   
-        console.log("INITIALISE STORE, prop = " + prop)
-
-        commit('save_proposal', prop)
-        commit('auth_success', token)
+        if (token) {
+          console.log("Store Initialised token = " + token)
+          commit('auth_success', token)
+        }
+        if (prop) {
+          commit('save_proposal', prop)
+        }
 
         this.state.initialised = true
       }
     },
     log({commit}, url) {
       console.log("Store tracking url: " + url)
-    },
-    getUser({commit}, credentials) {
-      return new Promise((resolve, reject) => {
-        commit('auth_request')
-
-        Backbone.ajax({
-          url: this.state.apiRoot+'/users/current',
-          success: function(resp) {
-            const token = resp.data.jwt
-            const user = credentials.login // Using passed fed id at the moment
-            commit('auth_success', token, user)
-            resolve(resp)
-          },
-          error: function(req, status, error) {
-            commit('auth_error')
-            reject(req)
-          }})
-        })
     },
     login({commit}, credentials) {
       return new Promise((resolve, reject) => {
@@ -142,15 +187,58 @@ export default new Vuex.Store({
     },
 
     logout({commit}){
-        return new Promise((resolve, reject) => {
-          commit('logout')
-          resolve()
+      return new Promise((resolve, reject) => {
+        commit('logout')
+        resolve()
+      })
+    },
+
+    get_user({commit}, options) {
+      return new Promise((resolve, reject) => {
+        // If not already logged in - return
+        
+        Backbone.ajax({
+          url: this.state.apiRoot+'/users/current',
+          success: function(resp) {
+            var payload = {
+              user: resp.user,
+              personid: resp.personid,
+              givenname: resp.givenname,
+              is_staff: resp.is_staff,
+              ty: resp.ty,
+              permissions: resp.permissions,
+            }
+
+            commit('update_user', payload)
+
+            commit('clear_proposal')
+
+            if (options && options.callback && options.callback instanceof Function) {
+              options.callback()
+            }
+            // Don't wait for the callback
+            resolve(resp)
+          },
+
+          error: function() {
+            console.log("Error getting user information")
+
+            if (options && options.callback && options.callback instanceof Function) {
+              options.callback()
+            }
+            reject()
+          }    
         })
-      }
+      })
+    },
   },
   getters: {
-    isLoggedIn: state => !!state.token,
-    isStaff: state => state.staff,
+    isLoggedIn: function(state) {
+      return state.token !== ''
+    },
+    isStaff: state => state.user.is_staff,
+    permissions: state => state.user.permissions,
+    proposalType: state => state.proposalType,
     token: function(state) {
       if (!state.token) {
         // Any in storage?
@@ -174,5 +262,6 @@ export default new Vuex.Store({
       return state.proposal
     },
     notification: state => state.notification,
+    notifications: state => state.notifications,
   }
 })

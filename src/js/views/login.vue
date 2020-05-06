@@ -21,33 +21,49 @@
 <script>
 export default {
     name: 'Login',
+    props: [
+        'redirect' // For future if we need to handle cas authentication and multiple redirects
+    ],
     data: function() {
         return {
             username: '',
             password: '',
-            message: ''
+            message: '',
+            redirectUrl: '/current'
         }
     },
     
-    created: function() {
-        console.log("Login created")
-    },
     mounted: function() {
-        console.log("Login mounted")
+        console.log("Login mounted - redirect = " + this.$route.query.redirect)
     },
     methods: {
         onSubmit: function(event) {
             event.preventDefault()
             console.log("Login: " + this.username + ":" + this.password)
-            let url = '/' // Need to get referred
 
             let credentials = { 'login': this.username, 'password': this.password }
 
             this.$store.dispatch('login', credentials)
-            .then(() => this.$router.push(url))
+            .then(() => {
+                this.$store.dispatch('get_user')
+                this.$router.push(this.redirectUrl)
+            })
             .catch(err => console.log(err))
 
+        },
+        saveUrl: function(url) {
+            // Save the URL we should redirect to
+            if (url) {
+                this.redirectUrl = url
+            }
         }
-    }
+    },
+    beforeRouteEnter: function(to, from, next) {
+        if (to.query.redirect) {
+            next(vm => vm.saveUrl(to.query.redirect))
+        } else {
+            next()
+        }
+    },
 }
 </script>

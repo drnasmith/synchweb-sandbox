@@ -36,9 +36,8 @@ var vm = new Vue({
     initializeMarionette: function() {
       // Initialise the Marionette parts of the app.
       // The Router will have initialised the app object but there are things we need to integrate here
+      // Mainly hooking old app methods into the vue router or vuex store
       let application = MarionetteApp()
-      // window.app = application
-      application.type = 'mx'
 
       let self = this
 
@@ -52,106 +51,53 @@ var vm = new Vue({
         }
       }
 
-      // Override Marionette Navigation method
+      // Override Marionette Navigation method - hook into Vue router
       application.navigate = function(url) {
-        console.log("Vue Navigate via router: " + url)
         self.$router.push(url)
       }
 
-      application.getuser = function(options) {
-        console.log("MARIONETTE GET USER CALLED " + JSON.stringify(options))
-        // Backbone.ajax({
-        //   url: application.apiurl+'/users/current',
-        //   success: function(resp) {
-        //       application.user = resp.user
-        //       application.personid = resp.personid
-        //       application.givenname = resp.givenname
-        //       application.staff = resp.is_staff
-        //       // Saving the default type for this user.
-        //       // Needed for resetting the home view
-        //       application.defaultType = resp.ty
-        //       if (!application.type) application.type = resp.ty
-    
-        //       // Should put this somewhere else...
-        //       application.user_can = function(perm) {
-        //         return resp.permissions.indexOf(perm) > -1
-        //       }
-    
-        //       application.cookie(null, function() {
-        //         if (options && options.callback) options.callback()
-        //       })
-        //   },
-    
-        //   error: function() {
-        //       if (options && options.callback) options.callback()
-        //   }
-    
-        // })
+      // Define user permission method - hooked into store
+      application.user_can = function(perm) {
+        return self.$store.getters.permissions.indexOf(perm) > -1
       }
+
+      // Method to retrieve user information
+      // Don't think we need this as we can load from login component
+      application.getuser = function(options) {
+        if (self.$store.isLoggedIn) {
+          self.$store.dispatch('get_user', options)  
+        }
+      }
+
+      app.login = function(xhr) {
+        // app.bc.reset([{ title: 'Login' }])
+        // app.content.show(new LoginView())
+        // We have experienced an error and need to login again
+        // Message login session has expired...
+        self.$store.commit('set_notification', {message: 'Authentication session has expired, please login again', level: 'error'})
+        self.$store.dispatch('logout')
+        self.$router.push('/login')
+    }
+      // We don't need to use marionette router anymoew
+      application.addInitializer(function(options){
+          console.log("Marionette::addInitializer from index.js")
+          // Load options 
+          application.options.fetch({
+              data: { t: new Date().getTime() },
+              success: function() {
+                  console.log("MarionetteApplication Got Options")
+                  application.initializeRegions()
+                  // application.getuser()
+                },
+              error: function() {
+                  console.log("MarionetteApplication Options not available")
+              }
+          })
+
+      })
 
       application.start()
 
     },
-    // initializeSync: function() {
-    //   console.log("VM initializeSync")
-    //   let self = this
-    //   // Allow us to set a global base url for the API
-    //   var oldSync = Backbone.sync;
-
-    //   Backbone.sync = function(method, model, options) {
-    //     var url = _.isFunction(model.url) ? model.url() : model.url;
-
-    //     options = options || {};
-    //     if (url) options.url = self.$store.getters.apiRoot+url
-          
-    //     return oldSync.call(this, method, model, options);
-    //   }
-    // },
-    // initializeAjax: function() {
-    //   console.log("VM initializeAjax")
-    //   let self = this
-
-    //   // Pass prop to Backbone.ajax
-    //   var oldAjax = Backbone.ajax
-
-    //   Backbone.ajax = function(options) {
-    //     console.log("Backbone.ajax method")
-    //       var prop = self.$store.getters.currentProposal
-    //       var token = self.$store.getters.token
-
-    //       // FormData
-    //       if (options.data instanceof FormData) {
-    //           options.data.append('prop', prop)
-    //           console.log("Backbone.ajax formData instance - adding prop: " + prop)
-
-    //       // JSON content
-    //       } else if (options.contentType == 'application/json' || options.type == 'DELETE') {
-    //         console.log("Backbone.ajax application/json instance  ")
-    //         if (options.data) var tmp = JSON.parse(options.data)
-    //           else var tmp = {}
-
-    //           if (Array.isArray(tmp)) tmp[0].prop = prop
-    //           else {
-    //             if (!tmp.prop) tmp.prop = prop
-    //           }
-    //           options.data = JSON.stringify(tmp)
-
-    //       // Append to object for anything else
-    //       } else {
-    //           console.log("Backbone.ajax <OTHER> instance  ")
-    //           if (!options.data) options.data = {}
-    //           if (!options.data.prop) options.data.prop = prop
-    //       }
-
-    //       // Send token with requst
-    //       if (token) {
-    //           options.beforeSend = function(request){
-    //               request.setRequestHeader('Authorization', 'Bearer ' + token);
-    //           }
-    //       }
-
-    //       return oldAjax.call(this, options)
-    //   }
-    // },
   }
 }).$mount('#synchweb-app')

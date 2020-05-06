@@ -22,7 +22,6 @@ export default function MarionetteApp() {
           options = options || {};
           if (url) {
               options.url = app.apiurl+url
-              console.log("Backbone.sync option url: " + options.url)
           }
 
           return oldSync.call(this, method, model, options);
@@ -34,27 +33,29 @@ export default function MarionetteApp() {
         Backbone.ajax = function(options) {
             var prop = window.app.prop
             var token = window.app.token
-            console.log("Backbone.ajax method url = " + options.url + ", app.prop = " + prop)
     
-            // FormData
-            if (options.data instanceof FormData) {
-                options.data.append('prop', prop)
-    
-            // JSON content
-            } else if (options.contentType == 'application/json' || options.type == 'DELETE') {
-                if (options.data) var tmp = JSON.parse(options.data)
-                else var tmp = {}
-    
-                if (Array.isArray(tmp)) tmp[0].prop = prop
-                else {
-                    if (!tmp.prop) tmp.prop = prop
+            // Automatically add the proposal to each request if we have one
+            if (prop !== '' ){
+                // FormData
+                if (options.data instanceof FormData) {
+                    options.data.append('prop', prop)
+        
+                // JSON content
+                } else if (options.contentType == 'application/json' || options.type == 'DELETE') {
+                    if (options.data) var tmp = JSON.parse(options.data)
+                    else var tmp = {}
+        
+                    if (Array.isArray(tmp)) tmp[0].prop = prop
+                    else {
+                        if (!tmp.prop) tmp.prop = prop
+                    }
+                    options.data = JSON.stringify(tmp)
+        
+                // Append to object for anything else
+                } else {
+                    if (!options.data) options.data = {}
+                    if (!options.data.prop) options.data.prop = prop
                 }
-                options.data = JSON.stringify(tmp)
-    
-            // Append to object for anything else
-            } else {
-                if (!options.data) options.data = {}
-                if (!options.data.prop) options.data.prop = prop
             }
     
             // Send token with requst
@@ -65,44 +66,58 @@ export default function MarionetteApp() {
             }
     
             return oldAjax.call(this, options)
-        }    
-        // We don't need to use marionette router anymoew
+        }
+
+        // Handle ajax errors in a generic way
+        $(document).ajaxError(_.debounce(function(event, xhr, settings, error) {
+            console.log('ajax error', 'status', xhr.status, 'code', settings, error)
+        
+            var json;
+            if (xhr.responseText) {
+                try {
+                    json = $.parseJSON(xhr.responseText)
+                } catch(err) {
+        
+                }
+            }
+            var msg = json && (json.error || json.msg) ? (json.error ? json.error : json.msg) : error
+        
+            if (xhr.readyState == 0) {
+                app.alert({ message: 'A network request failed', persist: 'network' })
+                
+            }
+        
+            if (xhr.status == 401) {
+                // Need to hook login into vue-router...
+                app.login(xhr)
+            }
+            if (xhr.status == 500) {
+                app.alert({ message: 'An application error has occurred <pre>'+msg+'</pre>', persist: 'e500' })
+            }
+            if (xhr.status == 503) {
+                if (json) app.alert({ message: 'A database error has occurred <pre>'+msg+'</pre>', persist: 'e503' })
+                else  app.alert({ message: 'A server error has occurred <pre>'+msg+'</pre>', persist: 'e503' })
+            }
+        }, 300))
+          
+        // We don't need to use marionette router anymore
         application.addInitializer(function(options){
-            require([
-                // 'modules/dc/router',
-                // 'modules/proposal/router',
-                // 'modules/shipment/router',
-                // 'modules/samples/router',
-                // 'modules/projects/router',
-                // 'modules/test/router',
-                // 'modules/contact/router',
-                // 'modules/cell/router',
-                // 'modules/assign/router',
-                // 'modules/fault/router',
-                // 'modules/stats/router',
-                // 'modules/blstats/router',
-                // 'modules/status/router',
-                // 'modules/docs/router',
-                // 'modules/feedback/router',
-                // 'modules/mc/router',
-                // 'modules/admin/router',
-                // 'modules/imaging/router',
-                // 'modules/types/em/relion/router',
-                // 'modules/types/em/scipion/router',
-            ], function() {
-                application.options.fetch({
-                    data: { t: new Date().getTime() },
-                    success: function() {
-                        console.log("MarionetteApplication Got Options")
-                        application.initializeRegions()
-                    },
-                    error: function() {
-                        console.log("MarionetteApplication Options not available")
-                    }
-                })
-            })
+            console.log("Marionette::addInitializer from app.js")
+                
+            // Load options 
+            // application.options.fetch({
+            //     data: { t: new Date().getTime() },
+            //     success: function() {
+            //         console.log("MarionetteApplication Got Options")
+            //         application.initializeRegions()
+            //     },
+            //     error: function() {
+            //         console.log("MarionetteApplication Options not available")
+            //     }
+            // })
         })
 
+        // This is redundant with Vue managing the marionette views
         application.initializeRegions = function() {
             console.log("MarionetteApplication::Initializing regions...")
             application.addRegions({
