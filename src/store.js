@@ -1,8 +1,11 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-import MarionetteApp from 'views/marionette/app.js'
+import MenuStore from './store.menus.js'
+
 import Backbone from 'backbone'
+import MarionetteApp from 'views/marionette/app.js'
+import Proposal from 'models/proposal.js'
 
 Vue.use(Vuex)
 
@@ -12,6 +15,9 @@ var API_ROOT = '/api'
 window.app = MarionetteApp()
 
 export default new Vuex.Store({
+  modules: {
+    menu: MenuStore,
+  },
   state: {
     // Flag we use to check if we have already setup prop/token
     initialised: false,
@@ -26,13 +32,9 @@ export default new Vuex.Store({
     },
     token: '',
     proposal: '',
-    proposalType: '',
+    proposalType: 'mx',
     visit: '',
     notifications: [],
-    notification: {
-      level: '',
-      message: ''
-    }
   },
   mutations: {
     //
@@ -50,6 +52,16 @@ export default new Vuex.Store({
         // Legacy app
         app.prop = state.proposal
       },
+      save_proposal_type(state, proposalType) {
+        // Save type, default to user type if null passed
+        state.proposalType = proposalType ? proposalType : state.user.defaultType
+        app.type = state.proposalType
+      },
+      clear_proposal_type(state) {
+        // Save type, default to user type if null passed
+        state.proposalType = state.user.defaultType ? state.user.defaultType : 'mx'
+        app.type = state.proposalType
+      },
       save_visit(state, visit) {
         state.visit = visit
       },
@@ -65,29 +77,14 @@ export default new Vuex.Store({
         notification.id = Date.now() // Using number of miliseconds since 1970 as uid
 
         state.notifications.push(notification)
-        state.notification.level = payload.level
-        state.notification.message = payload.message
       },
       clear_notifications(state) {
         console.log("Clearing notifications")
         state.notifications = []
       },
-      set_notification(state, payload) {
-          console.log("Setting notification " + payload.message)
-          state.notification.level = payload.level
-          state.notification.message = payload.message
-      },
       clear_notification(state, id) {
         console.log("Store Clearing notification for id " + id)
         state.notifications = state.notifications.filter(notification => notification.id !== id)
-        // )
-        // state.notifications.forEach(element => {
-        //   console.log("Checking notifications array for " + element.id)
-        //   if (element.id === id) {
-        //     console.log("remove item....")
-        //   }
-        // });
-        // state.notification = {level: '', message: ''}
       },
       //
       // Authorisation status
@@ -160,6 +157,35 @@ export default new Vuex.Store({
         }
 
         this.state.initialised = true
+      }
+    },
+    set_proposal({commit}, prop) {
+      console.log("STORE SET PROPOSAL SELECTED")
+      if (prop) {
+        // If we don't do this now - the ProposalModel appends the old proposal code onto the request
+        commit('save_proposal', prop)
+
+        return new Promise((resolve, reject) => {
+          var proposalModel = new Proposal({ PROPOSAL: prop })
+
+          proposalModel.fetch({
+              success: function() {
+                var proposalType = proposalModel.get('TYPE')
+                commit('save_proposal_type', proposalType)
+                resolve()
+              },
+
+              error: function() {
+                commit('add_notification', { title: 'No such proposal', message: 'The selected proposal does not exist', level: 'error' })
+                commit('clear_proposal')
+                commit('clear_proposal_type')
+                reject()
+              },  
+          })
+        })
+      } else {
+        commit('clear_proposal')
+        commit('clear_proposal_type')
       }
     },
     log({commit}, url) {
@@ -261,7 +287,7 @@ export default new Vuex.Store({
       }
       return state.proposal
     },
-    notification: state => state.notification,
+
     notifications: state => state.notifications,
   }
 })

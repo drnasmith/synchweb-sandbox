@@ -1,14 +1,14 @@
 <template>
   <div class="tw-bg-content-background">
     <notification/>
-    <header-menu v-bind:prop="proposal" v-bind:staff_menus="menus"/>
+    <header-menu v-bind:prop="proposal" v-bind:staff_menus="adminMenu"/>
 
     <div class="tw-mx-auto"> <!-- Popout menu for mobile screens -->
-        <sidebar :menu="proposal_menu"/>
+        <sidebar :menu="proposalMenu"/>
     </div>
 
     <div class="tw-w-10/12 tw-mx-auto"> <!-- Sets the main width of the content on screen -->
-        <navbar :menu="proposal_menu"/>
+        <navbar :menu="proposalMenu"/>
         <motd :message="motd"/>
 
         <div id="content-wrapper" class="tw-w-full tw-mx-2">
@@ -30,6 +30,7 @@ import Sidebar from 'components/sidebar.vue'
 import Navbar from 'components/navbar.vue'
 import Motd from 'components/utils/motd.vue'
 import Notification from 'components/utils/notification.vue'
+import EventBus from 'components/utils/event-bus.js'
 
 export default {
     name: 'App',
@@ -43,12 +44,12 @@ export default {
     },
     data: function() {
       return {
-        menus: [
-          {icon: 'fa-line-chart', link: '/reporting', description: 'Reporting'},
-          {icon: 'fa-image', link: '/imaging', description: 'Imaging'},
-          {icon: 'fa-cogs', link: '/settings', description: 'Overview'},
-          {icon: 'fa-pie-chart', link: '/stats', description: 'Stats'},
-          {icon: 'fa-truck', link: '/dewars', description: 'Logistics'},
+        admin_menu: [
+          {icon: 'fa-line-chart', link: '/reporting', name: 'Reporting'},
+          {icon: 'fa-image', link: '/imaging', name: 'Imaging'},
+          {icon: 'fa-cogs', link: '/settings', name: 'Overview'},
+          {icon: 'fa-pie-chart', link: '/stats', name: 'Stats'},
+          {icon: 'fa-truck', link: '/dewars', name: 'Logistics'},
         ],
         proposal_menu: [
           {link: '/shipments', name: 'Shipment'},
@@ -67,10 +68,54 @@ export default {
       token: function() {
         return this.$store.getters.token
       },
+      proposalMenu: function() {
+        // Old menu object has key:val as route-link:name
+        return this.getMenuType('menu')
+      },
+      extraMenu: function() {
+        // Old menu object has key:val as route-link:name
+        return this.getMenuType('extra')
+      },
+      adminMenu: function() {
+        // Old menu object has key:val as route-link:name
+        return this.getMenuType('admin')
+      }
     },
     created: function () {
+        EventBus.$on('proposalChange', function (payLoad) {
+            console.log("Sidebar Proposal has Changed - " + payload)
+        })
+
+        var menus = this.$store.getters['getMenu']
+        console.log("Menus: " + JSON.stringify(menus))
     },
     methods: {
+      getMenuType: function(menuType) {
+        var menu = []
+        var legacyMenu = this.$store.getters['getMenu'][menuType]
+        
+        if (legacyMenu) {
+          if (menuType === 'admin') {
+            Object.keys(legacyMenu).forEach(function(key) {
+              var title = legacyMenu[key]['title']
+              var icon = legacyMenu[key]['icon']
+              var permission = legacyMenu[key]['permission'] ? legacyMenu[key]['permission'] : ''
+
+              var item = {link: key, name: title, icon: 'fa-'+icon, permission: permission}
+              
+              menu.push(item)
+            })
+          } else {
+            // proposal and extra menus are simpler
+            Object.keys(legacyMenu).forEach(function(key) {
+              var item = {link: key, name: legacyMenu[key]}
+              menu.push(item)
+            })
+          }
+        }
+        console.log("Computed menu for " + menuType + ", " + JSON.stringify(menu))
+        return menu
+      }
     }
 }
 </script>

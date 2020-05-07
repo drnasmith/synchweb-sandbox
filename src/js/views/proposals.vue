@@ -50,8 +50,7 @@ export default {
     methods: {
         onSelected: function(proposal) {
             let prop = proposal.PROPOSALCODE+proposal.PROPOSALNUMBER
-            console.log("Selected Prop: " + prop)
-            this.$store.commit('save_proposal', prop)
+            this.$store.dispatch('set_proposal', prop)
             this.$router.push('/visits')
         },
         onPageChange: function(pageNumber) {

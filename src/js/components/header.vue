@@ -14,10 +14,10 @@
             :key="index" 
             class="tw-mx-1 tw-text-header-color hover:tw-text-header-hover-color" 
             :href="item.link"
-            :alt="item.description">
+            :alt="item.name">
             <div class="tw-flex tw-flex-row tw-items-center">
               <i class="fa fa-2x" v-bind:class="item.icon"/>
-              <p class="tw-text-xs tw-mx-1 tw-hidden md:tw-inline">{{item.description}}</p>
+              <p class="tw-text-xs tw-mx-1 tw-hidden md:tw-inline">{{item.name}}</p>
             </div>
             </a>
         </div>

@@ -52,6 +52,7 @@ export default {
             isLoading: false 
         }
     },
+    // Example of using vuelidate. Also possible to add this to the backbone model itself
     validations: {
         name: {
             required,
@@ -109,6 +110,9 @@ export default {
                     setTimeout(function() {
                         self.$store.commit('add_notification', {message: "...or was it", level: "error"})
                     }, 3000)
+                    setTimeout(function() {
+                        self.$store.commit('add_notification', {message: "...yes it was", level: "success"})
+                    }, 4000)
                     self.isLoading = false
                     self.resetForm()
                 },

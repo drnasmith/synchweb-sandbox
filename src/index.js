@@ -41,13 +41,13 @@ var vm = new Vue({
 
       let self = this
 
-      application.cookie = function(proposal, callbackFn) {
+      application.cookie = function(prop, callbackFn) {
         console.log("Saving proposal from legacy cookie fn")
 
-        self.$store.commit('save_proposal', proposal)
+        self.$store.dispatch('set_proposal', prop)
 
         if (callbackFn && callbackFn instanceof Function) {
-          callbackFn()
+            callbackFn()
         }
       }
 
@@ -68,6 +68,20 @@ var vm = new Vue({
           self.$store.dispatch('get_user', options)  
         }
       }
+
+      // Method to retrieve user information
+      // Don't think we need this as we can load from login component
+      application.alert = function(options) {
+        var payload = {message: options.message, level: 'error'}
+        self.$store.dispatch('add_notification', payload)
+      }
+
+      application.message = function(options) {
+        var payload = {message: options.message, level: 'info'}
+        self.$store.dispatch('add_notification', payload)
+      }
+
+      
 
       app.login = function(xhr) {
         // app.bc.reset([{ title: 'Login' }])

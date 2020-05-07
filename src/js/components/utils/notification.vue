@@ -1,6 +1,6 @@
 <template>
-    <section>
-        <div v-if="message" class="tw-fixed tw-left-0 tw-right-0 tw-top-0 tw-z-10">
+    <section id="notifications">
+        <div class="tw-fixed tw-left-0 tw-right-0 tw-top-0 tw-z-10">
             <div class="notification">
                 <transition-group name="notify" tag="ul">
                     <li v-for="item in notifications" :key="item.id" class="notify-item"
@@ -24,12 +24,17 @@ export default {
         }
     },
     filters: {
+        // Simple filter to convert text to upper case
         upper: function (value) {
-            if (!value) return ''
-            return value.toString().toUpperCase()
+            if (!value) {
+                return ''
+            } else {
+                return value.toString().toUpperCase()
+            }
         }
     },
     watch: {
+        // We deal with clearing the notifications after a given time (5s)
         notifications: function(val) {
             console.log("Notifications have changed " + val)
 
@@ -46,12 +51,6 @@ export default {
     computed: {
         notifications: function() {
             return this.$store.getters.notifications
-        },
-        message: function() {
-            return this.$store.getters.notification.message
-        },
-        level: function() {
-            return this.$store.getters.notification.level
         },
     },
     methods: {
